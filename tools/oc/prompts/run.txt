@@ -1,0 +1,20 @@
+Generate one image with the image generation tool and save it as sheets/run.png in the current directory.
+Two reference images are attached: the original character art, and sheets/walkA.png — an approved sprite sheet of her. Match walkA.png exactly: same proportions (not chibi), same rendering style, line weight, colors and character size per frame.
+
+CHARACTER (match the attached original art exactly — this is my original character):
+- SAME PROPORTIONS AS THE ORIGINAL ART: a slender young girl about 6 heads tall with long slim legs. NOT chibi, NOT super-deformed, NOT big-headed.
+- ash-blonde / light grey-beige wavy shoulder-length hair with soft flyaway strands, one big curly ahoge loop on top
+- black ribbon headband with a small bow on top of the head
+- violet eyes, light blush
+- dark purple capelet over a white collared blouse, white frilly cuffs
+- dark purple layered frilly skirt with a white petticoat frill
+- light lavender tights, black Mary Jane shoes with cross straps
+
+STYLE: clean 2D anime game sprite in the same style as the original art: crisp dark-purple outlines, 2-tone cel shading, flat colors. Identical design, scale and line weight in every frame. Her FAR-side leg and arm are shaded a little darker than the near side, so the two legs are always easy to tell apart.
+BACKGROUND: solid flat pure green #00FF00 everywhere (chroma key). No ground shadows, no text, no labels, no frame borders, no grid lines.
+LAYOUT: landscape image, 2 rows x 4 columns, one full-body frame centred in each cell with generous green space around it; frames never touch or overlap; every frame the same height; feet resting on the same baseline within each row.
+
+FRAMES (left to right, top row then bottom row):
+1-6 a light, bouncy JOG cycle, side view facing RIGHT, drawn on a treadmill (torso at the same horizontal position in every frame): 1 near foot contact, 2 push off with both feet briefly off the ground, 3 far foot reaching forward, 4 far foot contact, 5 push off with both feet off the ground, 6 near foot reaching forward. Arms bent and swinging, hair and skirt bouncing.
+7 three-quarter front-right, bubble wand lowered, delighted smile looking up at floating bubbles
+8 three-quarter front-right, eyes closed happily, nodding in approval at something she just read

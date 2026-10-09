@@ -1,0 +1,25 @@
+Generate one image with the image generation tool and save it as sheets/twirl.png in the current directory.
+Two reference images are attached: the original character art, and sheets/walkA.png — an approved sprite sheet of her. Match walkA.png exactly: same proportions (not chibi), same rendering style, line weight, colors and character size per frame.
+
+CHARACTER (match the attached original art exactly — this is my original character):
+- SAME PROPORTIONS AS THE ORIGINAL ART: a slender young girl about 6 heads tall with long slim legs. NOT chibi, NOT super-deformed, NOT big-headed.
+- ash-blonde / light grey-beige wavy shoulder-length hair with soft flyaway strands, one big curly ahoge loop on top
+- black ribbon headband with a small bow on top of the head
+- violet eyes, light blush
+- dark purple capelet over a white collared blouse, white frilly cuffs
+- dark purple layered frilly skirt with a white petticoat frill
+- light lavender tights, black Mary Jane shoes with cross straps
+
+STYLE: clean 2D anime game sprite in the same style as the original art: crisp dark-purple outlines, 2-tone cel shading, flat colors. Identical design, scale and line weight in every frame. Her FAR-side leg and arm are shaded a little darker than the near side, so the two legs are always easy to tell apart.
+BACKGROUND: solid flat pure green #00FF00 everywhere (chroma key). No ground shadows, no text, no labels, no frame borders, no grid lines.
+LAYOUT: landscape image, 2 rows x 4 columns, one full-body frame centred in each cell with generous green space around it; frames never touch or overlap; every frame the same height; feet resting on the same baseline within each row.
+
+FRAMES (left to right, top row then bottom row), one graceful DANCE TWIRL in place, like a real person spinning on the balls of her feet:
+1 front view, starting the twirl: one foot pointed, arms opening outward, skirt starting to lift
+2 three-quarter view turning to her right, arms out, skirt flaring, hair swinging outward
+3 side profile facing right, mid-spin on her toes, skirt fully flared
+4 three-quarter back view, hair fanned out by the spin
+5 full back view, skirt flared, hair swinging
+6 three-quarter back view from the other side, continuing the spin
+7 side profile facing left, skirt starting to settle
+8 front view, finishing with a cute pose: one hand near her cheek, skirt settling, smiling

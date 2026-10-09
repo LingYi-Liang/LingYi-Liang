@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 58" width="1200" height="58" role="img" aria-label="In review: modelscope/ms-agent — fix(llm): merge streamed tool calls by index"><title>In review: modelscope/ms-agent — fix(llm): merge streamed tool calls by index</title>
+<defs>
+<linearGradient id="strip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#11296a"/><stop offset=".6" stop-color="#0d2058"/><stop offset="1" stop-color="#1a1d62"/></linearGradient>
+<linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".05"/></linearGradient>
+<clipPath id="sc"><rect x="2" y="4" width="1196" height="46" rx="13"/></clipPath>
+<clipPath id="logoClip" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".28"/></clipPath>
+<linearGradient id="mono" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4fb3ff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
+<style>
+.sans{font-family:'Segoe UI','Helvetica Neue',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans','Microsoft YaHei',sans-serif}
+.serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Songti SC','SimSun',serif}
+.mono{font-family:'Cascadia Mono','SF Mono',Menlo,Consolas,'Liberation Mono','Microsoft YaHei',monospace}
+.tw{animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.22}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+</style>
+</defs>
+<rect x="2" y="8" width="1196" height="46" rx="13" fill="#020718" opacity=".5"/>
+<rect x="2" y="4" width="1196" height="46" rx="13" fill="url(#strip)"/>
+<g clip-path="url(#sc)"><circle cx="142.04" cy="45.41" r="0.87" fill="#fff" class="tw" style="animation-duration:6.65s;animation-delay:-3.31s"/><circle cx="570.64" cy="47.08" r="0.37" fill="#fff" opacity="0.72"/><circle cx="190.1" cy="25.66" r="0.61" fill="#a8dcff" class="tw" style="animation-duration:4.79s;animation-delay:-5.89s"/><circle cx="664.39" cy="39.31" r="0.41" fill="#fff" class="tw" style="animation-duration:3.7s;animation-delay:-0.51s"/><circle cx="760.2" cy="18.27" r="0.94" fill="#fff" class="tw" style="animation-duration:5.85s;animation-delay:-5.59s"/><circle cx="869.12" cy="11" r="0.91" fill="#a8dcff" opacity="0.62"/><circle cx="13.36" cy="12.92" r="0.52" fill="#fff" opacity="0.59"/><circle cx="779.99" cy="28.99" r="0.43" fill="#fff" opacity="0.58"/><circle cx="1063.18" cy="45.59" r="0.36" fill="#fff" opacity="0.49"/><circle cx="567.09" cy="41.57" r="0.47" fill="#fff" opacity="0.76"/><circle cx="470.14" cy="30.21" r="0.53" fill="#fff" class="tw" style="animation-duration:6.23s;animation-delay:-6.3s"/><circle cx="1164.33" cy="48.19" r="0.86" fill="#fff" opacity="0.76"/><circle cx="345.13" cy="35.89" r="0.43" fill="#fff" opacity="0.86"/><circle cx="597.56" cy="19.43" r="0.82" fill="#fff" opacity="0.45"/></g>
+<rect x="2.75" y="4.75" width="1194.5" height="44.5" rx="12.5" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+<rect x="16" y="12" width="30" height="30" rx="8.4" fill="#fff"/>
+<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt+uBvAAADAElEQVR4nOzcz2rUXBzG8ZPkJOlk6NuW0tJOXy1iaUdLUUEEQXDRhV6BIIh/kC7UTd2oC/UOiqAu1I24E0HExUjpwhsQCqLYRam6EoUyM1jJTJJJIl7A+T1DgtTF89nmJD18p4FzJjOj8zxXZGbv9gT+dQwEMBDAQAADAQwEMBDAQAADAQwEMBDAQAADAQwEMBDAQAADAQwEMBDAQAADAQwEMBDAQAADAVo+HEXq1Yuk8NVPLjqTtb/7Grx8niRFJ3j0mD0z58hjQKAkVo3XvYJ/X6n5BXuyVvjsvqy96YVhwXPHxt2ZOTCGtxjAQAADAQwEMBDAQAADAbodJ7kyfgovTCzh5GpVeb40QLvlZteH4RHLHxCO562m8VjYS1txJpxc1dpaXn/fzYyDdFe37+03Hb267B4/AZaauyvL1IUzHdPRyukfzpG2cPrlfdO8xQAGAhgIYCCAgQAGAhgIYCCAgQBtt327Z1xJ24mzZ69xMxEE4OrbURSl0lp+zPc9R3qRvne6qfh9pImgIr+rLMy/a+uo6Usn12xr6VzYMa7F/+y2Hj2riBOQ3N/c2vi5Iwy4VZ+drkqZ73z4tB3HwoCVQwuBBm+8mzx9Er9dS4UB1657vMUABgIYCGAggIEABgIYCGAggIEAPVu3o8h42HXVxkfjWrP2vz00LD3VmKoM9DJpo/DtqwpzaS075QYjnicMgK+wMH/fV/WD0gUG/1OW/MsLv3bUlUvGnUj5pxp3b3a/bEkTWHnoj08U/zeXn2pcXHIXT4H58xYDGAhgIICBAAYCGAhgIICBAAYCSq2DP29mWksbhdm6MzQsXeHAvD06Kq2kPfGhg1Jq/V2amqdQ/gfaSgVabaSrDSnQjdvewmHpkcPZ89I+qx+PH8SFP2nfD95iAAMBDAQwEMBAAAMBDAQwEADek84y1W4VX40ODlpu2ZUg0GoW/z3joGoNSF9jUDgQ8RYDGAhgIICBAAYCGAhgIICBAAYCGAhgIICBAAYCGAhgIICBgN8BAAD//4dHq/l9OUn7AAAAAElFTkSuQmCC" x="16" y="12" width="30" height="30" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
+<rect x="16.5" y="12.5" width="29" height="29" rx="8.4" fill="none" stroke="#fff" stroke-opacity=".35"/>
+<text x="58" y="33" class="mono" font-size="15"><tspan fill="#7f9cc6">modelscope/</tspan><tspan fill="#fff">ms-agent</tspan></text>
+<rect x="370" y="15" width="82.8" height="24" rx="12" fill="#fff" fill-opacity=".06" stroke="#5cc4ff" stroke-opacity=".4"/>
+<text x="411.4" y="31.5" text-anchor="middle" class="mono" font-size="12" fill="#a8dcff">fix · llm</text>
+<text x="464.8" y="33" class="sans" font-size="17" fill="#f1f8ff">Merge streamed tool calls by index</text>
+<text x="1068.5" y="33" text-anchor="end" class="mono" font-size="13.5" fill="#bcd5f2">★ 4.4k</text>
+<rect x="1084.5" y="14" width="91.5" height="26" rx="13" fill="#5cc4ff" fill-opacity=".14" stroke="#5cc4ff" stroke-opacity=".5"/>
+<text x="1130.25" y="31.5" text-anchor="middle" class="mono" font-size="12.5" fill="#a8dcff">in review</text>
+</svg>

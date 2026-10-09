@@ -1,0 +1,26 @@
+Generate one image with the image generation tool and save it as sheets/WALKNAME.png in the current directory.
+
+CHARACTER (match the attached original art exactly — this is my original character):
+- SAME PROPORTIONS AS THE ORIGINAL ART: a slender young girl about 6 heads tall with long slim legs. NOT chibi, NOT super-deformed, NOT big-headed.
+- ash-blonde / light grey-beige wavy shoulder-length hair with soft flyaway strands, one big curly ahoge loop on top
+- black ribbon headband with a small bow on top of the head
+- violet eyes, light blush
+- dark purple capelet over a white collared blouse, white frilly cuffs
+- dark purple layered frilly skirt with a white petticoat frill
+- light lavender tights, black Mary Jane shoes with cross straps
+
+STYLE: clean 2D anime game sprite in the same style as the original art: crisp dark-purple outlines, 2-tone cel shading, flat colors. Identical design, scale and line weight in every frame. Her FAR-side leg and arm are shaded a little darker than the near side, so the two legs are always easy to tell apart.
+BACKGROUND: solid flat pure green #00FF00 everywhere (chroma key). No ground shadows, no text, no labels, no frame borders, no grid lines.
+LAYOUT: landscape image, 2 rows x 4 columns, one full-body frame centred in each cell with generous green space around it; frames never touch or overlap; every frame the same height; feet resting on the same baseline within each row.
+
+FRAMES (left to right, top row then bottom row): one smooth side-view WALK CYCLE facing RIGHT, drawn like an animation on a treadmill:
+her head and torso stay at the SAME horizontal position in every frame; only legs, arms, hair and skirt move. A gentle natural walk, not a march.
+1 CONTACT: near (left) leg forward, heel touching down; far leg behind on its toes; legs at their widest.
+2 DOWN: weight drops onto the front leg, knee softly bent; body lowest.
+3 PASSING: support leg straight under the body; far leg's knee swings forward past it; legs closest together.
+4 UP: support leg pushes up onto the toes; far leg reaches forward; body highest.
+5 CONTACT: far (right) leg forward, heel touching down; near leg behind on its toes; legs at their widest.
+6 DOWN: weight on the far leg, knee softly bent.
+7 PASSING: near leg's knee swings forward past the support leg; legs closest together.
+8 UP: near leg reaches forward, leading back into frame 1.
+Arms swing opposite to the legs (near arm back when the near leg is forward). Calm, pleasant expression.

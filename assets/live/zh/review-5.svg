@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 58" width="1200" height="58" role="img" aria-label="In review: bytedance/UI-TARS-desktop — fix(cli): prevent 401/403 errors in cached headless runs"><title>In review: bytedance/UI-TARS-desktop — fix(cli): prevent 401/403 errors in cached headless runs</title>
+<defs>
+<linearGradient id="strip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#11296a"/><stop offset=".6" stop-color="#0d2058"/><stop offset="1" stop-color="#1a1d62"/></linearGradient>
+<linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".05"/></linearGradient>
+<clipPath id="sc"><rect x="2" y="4" width="1196" height="46" rx="13"/></clipPath>
+<clipPath id="logoClip" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".28"/></clipPath>
+<linearGradient id="mono" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4fb3ff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
+<style>
+.sans{font-family:'Segoe UI','Helvetica Neue',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans','Microsoft YaHei',sans-serif}
+.serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Songti SC','SimSun',serif}
+.mono{font-family:'Cascadia Mono','SF Mono',Menlo,Consolas,'Liberation Mono','Microsoft YaHei',monospace}
+.tw{animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.22}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+</style>
+</defs>
+<rect x="2" y="8" width="1196" height="46" rx="13" fill="#020718" opacity=".5"/>
+<rect x="2" y="4" width="1196" height="46" rx="13" fill="url(#strip)"/>
+<g clip-path="url(#sc)"><circle cx="708.99" cy="24.79" r="0.39" fill="#fff" class="tw" style="animation-duration:5.99s;animation-delay:-2.63s"/><circle cx="552.06" cy="4.45" r="0.45" fill="#fff" opacity="0.65"/><circle cx="148.49" cy="26.38" r="0.49" fill="#fff" class="tw" style="animation-duration:6s;animation-delay:-4.31s"/><circle cx="709.87" cy="33.45" r="0.72" fill="#fff" class="tw" style="animation-duration:5.9s;animation-delay:-5.85s"/><circle cx="1163.98" cy="21.8" r="0.76" fill="#fff" opacity="0.58"/><circle cx="334.15" cy="11.33" r="0.39" fill="#a8dcff" opacity="0.49"/><circle cx="207.86" cy="14.5" r="1.08" fill="#fff" class="tw" style="animation-duration:4.7s;animation-delay:-0.94s"/><circle cx="213.18" cy="17.6" r="0.37" fill="#a8dcff" opacity="0.63"/><circle cx="1129.64" cy="8.46" r="0.39" fill="#fff" class="tw" style="animation-duration:4.34s;animation-delay:-6.6s"/><circle cx="1155.52" cy="13.83" r="0.74" fill="#fff" opacity="0.8"/><circle cx="342.86" cy="12.89" r="0.61" fill="#fff" opacity="0.51"/><circle cx="372.82" cy="29.99" r="0.64" fill="#fff" class="tw" style="animation-duration:3.98s;animation-delay:-1.59s"/><circle cx="1011.02" cy="34.13" r="0.54" fill="#fff" opacity="0.71"/><circle cx="456.09" cy="22.87" r="0.36" fill="#fff" class="tw" style="animation-duration:6.92s;animation-delay:-0.6s"/></g>
+<rect x="2.75" y="4.75" width="1194.5" height="44.5" rx="12.5" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+<rect x="16" y="12" width="30" height="30" rx="8.4" fill="#fff"/>
+<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAEdElEQVR4nOydz2sjZRjHn8oeqttMZnSbLuo4SVDzo9VEqBK0kCA51FMabA+eFgVhBf8ADx4WvOxhWTwIehG2HmSlgU1uPVTIYCwhBGy1Nukim8ZardntzrTruntYiEx3Kmlc2sYk800nzwdeQtIm75Pnk7zzTnjfeU7V63VicDyGDqDfYQFgWAAYFgCGBYBhAWBYAJhT6ABOIt9v/hofoIEh2SFkZcGpt/NaLOB/sH3v3hvXb29fMO8uyQ5hXhacquwQcrLg/KuV12IB7RPeuLNrtI+I6AERFWWHsCALzm9lh5CXBef9w57MAjqLkc/Ixp1do31MREby8y8++VT6zONPfPP6M/JW8xMOHIRnMz+FLQ3X/gwSUez67e1PFzc3/rhUWCxdKix+3vgPB74Bs5mVH2YzK1vK00I69upzmZDPlQv7R1oa05hD8Zvtg/0HHjUEna3+vnt+NrNy3hzTciGfKxv2u9SQz5UP+0cOHdOY1jjqGGD8Pba8VjMamWOaIWTBFFIM+0ceWBOqPWn1IGyMafHltVrcFGIMT7nouDyXePOFr/nb0TrtngkPEdGkWtz4cnmtFulQTH0F/xQBhgWAYQFgWAAYFgCGBYBhAWBYABgWAIYFgGEBYFgAGBYAhgWAYQFgWEAD125Ux0ua/ryVffb1spSSpg+VtZ144c+bic27f08RkZj0Ku8GJPEXq2LoKwFmwidKmh4tazsxIhpH58DWAkqaPljWdiINCZ/otffcU8F0is9+XH2vULv1jpnwQXQ8h2FLAYXarYtENIyO4zjwLAgMCwDDAsCwADCWCvh5XRubUytuK/vsdSydBa1W9bdTauVCSq0sBRUxHXRLalAR86NuqW/XlKKmoeHVqm402l/gG1TErCmkOOqW+mbFdS+cB+wt8F2t6pMNQhamo54sEakzUc8SOsBu0gsCmjGETKXUypRxJ6VW9GeHT89Fgq6vZqKeHDq4TnMSZkHibzfvvp9SK5+gA+kGJ0GArWEBYFgAGBYAhgWAYQFgWAAYFgCGBYBhAWBYABgWAIYFgGEBYFgAGBYAhgWAYQFgWAAYFgCGBYBhAWBsKeA115mLRFREx3EcenFhVtt8+HLwMhFdLmm6WNZ2YuYesTgRjaFja8aWAvYJSKIekMR0kpQ0PdwHfJaIYtduVKPGrXkdZyi2FtBM0qtsEdHVpFe5Sg+FuE0hCSKaRGzo6ysBzSS9yjoRXUl6lSvmltYJv+T8zzX+u0lfC2gkIIn3A5K4YHW/tpwFnSRYAJh2h6B/L18f8rnyHYqpr2hVwF5RmpDPNc8FHDrDUQJ6pYTJd9NRzxeAfrvOowT0QhGfMhFlp6Me1bidiXosnRpayQEB5xJjr5xLvITYFLfelPB1QAxWsPfBanygSYBlydeJaN5M+LyNE35kITdLT8SCimh8yt+KBF1Zefi0HTdn93Ypw1G3pI66JSu7tIK2inkO1Ov17oVmUzpZzpYFgOGfIsCwADAsAAwLAMMCwLAAMCwAzD8BAAD///J3XXpNNyydAAAAAElFTkSuQmCC" x="16" y="12" width="30" height="30" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
+<rect x="16.5" y="12.5" width="29" height="29" rx="8.4" fill="none" stroke="#fff" stroke-opacity=".35"/>
+<text x="58" y="33" class="mono" font-size="15"><tspan fill="#7f9cc6">bytedance/</tspan><tspan fill="#fff">UI-TARS-desktop</tspan></text>
+<rect x="370" y="15" width="82.8" height="24" rx="12" fill="#fff" fill-opacity=".06" stroke="#5cc4ff" stroke-opacity=".4"/>
+<text x="411.4" y="31.5" text-anchor="middle" class="mono" font-size="12" fill="#a8dcff">fix · cli</text>
+<text x="464.8" y="33" class="sans" font-size="17" fill="#f1f8ff">Prevent 401/403 errors in cached headless runs</text>
+<text x="1098.5" y="33" text-anchor="end" class="mono" font-size="13.5" fill="#bcd5f2">★ 39k</text>
+<rect x="1114.5" y="14" width="61.5" height="26" rx="13" fill="#5cc4ff" fill-opacity=".14" stroke="#5cc4ff" stroke-opacity=".5"/>
+<text x="1145.25" y="31.5" text-anchor="middle" class="mono" font-size="12.5" fill="#a8dcff">审核中</text>
+</svg>

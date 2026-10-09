@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 64" width="1200" height="64" role="img" aria-label="观测记录 · OBSERVATION DECK"><title>观测记录 · OBSERVATION DECK</title>
+<defs>
+<linearGradient id="l" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a7fd4" stop-opacity="0"/><stop offset="1" stop-color="#2a7fd4" stop-opacity=".75"/></linearGradient>
+<linearGradient id="r" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff" stop-opacity=".75"/><stop offset="1" stop-color="#7c5cff" stop-opacity="0"/></linearGradient>
+<style>
+.sans{font-family:'Segoe UI','Helvetica Neue',-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans','Microsoft YaHei',sans-serif}
+.serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Songti SC','SimSun',serif}
+.mono{font-family:'Cascadia Mono','SF Mono',Menlo,Consolas,'Liberation Mono','Microsoft YaHei',monospace}
+.tw{animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.22}50%{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+</style>
+</defs>
+<rect x="118.8" y="31.5" width="270" height="1.2" fill="url(#l)"/>
+<rect x="807.2" y="31.5" width="270" height="1.2" fill="url(#r)"/>
+<path d="M408.8 25Q409.92 30.88 415.8 32Q409.92 33.12 408.8 39Q407.68 33.12 401.8 32Q407.68 30.88 408.8 25Z" fill="#2a7fd4"/>
+<path d="M787.2 25Q788.32 30.88 794.2 32Q788.32 33.12 787.2 39Q786.08 33.12 780.2 32Q786.08 30.88 787.2 25Z" fill="#7c5cff"/>
+<text x="600" y="38" text-anchor="middle" class="mono" font-size="16" letter-spacing="4" fill="#6b80dc">观测记录 · OBSERVATION DECK</text>
+</svg>

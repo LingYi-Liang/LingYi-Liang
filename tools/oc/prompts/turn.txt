@@ -1,0 +1,25 @@
+Generate one image with the image generation tool and save it as sheets/turn.png in the current directory.
+Two reference images are attached: the original character art, and sheets/walkA.png — an approved sprite sheet of her. Match walkA.png exactly: same proportions (not chibi), same rendering style, line weight, colors and character size per frame.
+
+CHARACTER (match the attached original art exactly — this is my original character):
+- SAME PROPORTIONS AS THE ORIGINAL ART: a slender young girl about 6 heads tall with long slim legs. NOT chibi, NOT super-deformed, NOT big-headed.
+- ash-blonde / light grey-beige wavy shoulder-length hair with soft flyaway strands, one big curly ahoge loop on top
+- black ribbon headband with a small bow on top of the head
+- violet eyes, light blush
+- dark purple capelet over a white collared blouse, white frilly cuffs
+- dark purple layered frilly skirt with a white petticoat frill
+- light lavender tights, black Mary Jane shoes with cross straps
+
+STYLE: clean 2D anime game sprite in the same style as the original art: crisp dark-purple outlines, 2-tone cel shading, flat colors. Identical design, scale and line weight in every frame. Her FAR-side leg and arm are shaded a little darker than the near side, so the two legs are always easy to tell apart.
+BACKGROUND: solid flat pure green #00FF00 everywhere (chroma key). No ground shadows, no text, no labels, no frame borders, no grid lines.
+LAYOUT: landscape image, 2 rows x 4 columns, one full-body frame centred in each cell with generous green space around it; frames never touch or overlap; every frame the same height; feet resting on the same baseline within each row.
+
+FRAMES (left to right, top row then bottom row), a NATURAL human turn from profile to facing the viewer, then two reactions:
+1 side profile facing right, standing still, arms relaxed
+2 her head and eyes turn toward the viewer first while her body is still in profile (a natural glance over the shoulder)
+3 mid-turn: shoulders and hips rotate to three-quarter front-right, weight shifts onto the back foot, the front foot lifts slightly to step around; hair and skirt lag behind the turn
+4 three-quarter front view: the stepping foot plants, hair still swinging from the momentum
+5 front view facing the viewer, settled, gentle smile, arms relaxed
+6 same as 5 but blinking (eyes closed)
+7 three-quarter front-right, chin raised, looking up with curiosity at something written above her head
+8 front view, smiling and giving the viewer a thumbs-up with her right hand, a small nod
