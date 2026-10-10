@@ -16,27 +16,27 @@
 </p>
 <p align="center"><a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests"><img src="assets/live/en/merged-head.svg" width="100%" alt=""></a></p>
 <p align="center">
-  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-1.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/en/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/en/merged-3.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3944"><img src="assets/live/en/merged-4.svg" width="24%" alt="Tencent/WeKnora: fix(dataset): allow selecting the QA answer model"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/en/merged-1.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/en/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/en/merged-4.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/apache/fory-site/pull/514"><img src="assets/live/en/merged-5.svg" width="24%" alt="apache/fory-site: Fix edit links for versioned English documentation"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/3944"><img src="assets/live/en/merged-5.svg" width="24%" alt="Tencent/WeKnora: fix(dataset): allow selecting the QA answer model"></a>
+  <a href="https://github.com/apache/fory-site/pull/514"><img src="assets/live/en/merged-6.svg" width="24%" alt="apache/fory-site: Fix edit links for versioned English documentation"></a>
 </p>
 <details>
 <summary><img src="assets/live/en/review-head.svg" width="96%" alt="Pull requests in review (click to expand)"></summary>
 <p align="center">
   <a href="https://github.com/langgenius/dify/pull/43537"><img src="assets/live/en/review-1.svg" width="100%" alt="langgenius/dify: refactor(api): separate console conversation variable queries"></a>
   <a href="https://github.com/vllm-project/vllm/pull/60493"><img src="assets/live/en/review-2.svg" width="100%" alt="vllm-project/vllm: [Bugfix] Reserve sparse MLA indexer metadata before sizing the KV cache"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/en/review-3.svg" width="100%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6465"><img src="assets/live/en/review-4.svg" width="100%" alt="bytedance/deer-flow: fix(mcp): keep OAuth refresh waiters off the default executor"></a>
-  <a href="https://github.com/bytedance/UI-TARS-desktop/pull/2042"><img src="assets/live/en/review-5.svg" width="100%" alt="bytedance/UI-TARS-desktop: fix(cli): prevent 401/403 errors in cached headless runs"></a>
-  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/en/review-6.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/en/review-7.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
-  <a href="https://github.com/modelscope/ms-agent/pull/1014"><img src="assets/live/en/review-8.svg" width="100%" alt="modelscope/ms-agent: fix(llm): merge streamed tool calls by index"></a>
-  <a href="https://github.com/MiniMax-AI/MiniMax-MCP/pull/107"><img src="assets/live/en/review-9.svg" width="100%" alt="MiniMax-AI/MiniMax-MCP: Fix save failures caused by invalid filename characters"></a>
-  <a href="https://github.com/llm-d/llm-d-router/pull/3173"><img src="assets/live/en/review-10.svg" width="100%" alt="llm-d/llm-d-router: fix: check projected request cost before flow-control release"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6465"><img src="assets/live/en/review-3.svg" width="100%" alt="bytedance/deer-flow: fix(mcp): keep OAuth refresh waiters off the default executor"></a>
+  <a href="https://github.com/bytedance/UI-TARS-desktop/pull/2042"><img src="assets/live/en/review-4.svg" width="100%" alt="bytedance/UI-TARS-desktop: fix(cli): prevent 401/403 errors in cached headless runs"></a>
+  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/en/review-5.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/en/review-6.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
+  <a href="https://github.com/modelscope/ms-agent/pull/1014"><img src="assets/live/en/review-7.svg" width="100%" alt="modelscope/ms-agent: fix(llm): merge streamed tool calls by index"></a>
+  <a href="https://github.com/MiniMax-AI/MiniMax-MCP/pull/107"><img src="assets/live/en/review-8.svg" width="100%" alt="MiniMax-AI/MiniMax-MCP: Fix save failures caused by invalid filename characters"></a>
+  <a href="https://github.com/llm-d/llm-d-router/pull/3173"><img src="assets/live/en/review-9.svg" width="100%" alt="llm-d/llm-d-router: fix: check projected request cost before flow-control release"></a>
 </p>
 </details>
 

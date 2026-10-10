@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 58" width="1200" height="58" role="img" aria-label="In review: bytedance/deer-flow — fix(mcp): keep OAuth refresh waiters off the default executor"><title>In review: bytedance/deer-flow — fix(mcp): keep OAuth refresh waiters off the default executor</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 58" width="1200" height="58" role="img" aria-label="In review: bytedance/UI-TARS-desktop — fix(cli): prevent 401/403 errors in cached headless runs"><title>In review: bytedance/UI-TARS-desktop — fix(cli): prevent 401/403 errors in cached headless runs</title>
 <defs>
 <linearGradient id="strip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#11296a"/><stop offset=".6" stop-color="#0d2058"/><stop offset="1" stop-color="#1a1d62"/></linearGradient>
 <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".05"/></linearGradient>
@@ -22,11 +22,11 @@
 <rect x="16" y="12" width="30" height="30" rx="8.4" fill="#fff"/>
 <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAEdElEQVR4nOydz2sjZRjHn8oeqttMZnSbLuo4SVDzo9VEqBK0kCA51FMabA+eFgVhBf8ADx4WvOxhWTwIehG2HmSlgU1uPVTIYCwhBGy1Nukim8ZardntzrTruntYiEx3Kmlc2sYk800nzwdeQtIm75Pnk7zzTnjfeU7V63VicDyGDqDfYQFgWAAYFgCGBYBhAWBYAJhT6ABOIt9v/hofoIEh2SFkZcGpt/NaLOB/sH3v3hvXb29fMO8uyQ5hXhacquwQcrLg/KuV12IB7RPeuLNrtI+I6AERFWWHsCALzm9lh5CXBef9w57MAjqLkc/Ixp1do31MREby8y8++VT6zONPfPP6M/JW8xMOHIRnMz+FLQ3X/gwSUez67e1PFzc3/rhUWCxdKix+3vgPB74Bs5mVH2YzK1vK00I69upzmZDPlQv7R1oa05hD8Zvtg/0HHjUEna3+vnt+NrNy3hzTciGfKxv2u9SQz5UP+0cOHdOY1jjqGGD8Pba8VjMamWOaIWTBFFIM+0ceWBOqPWn1IGyMafHltVrcFGIMT7nouDyXePOFr/nb0TrtngkPEdGkWtz4cnmtFulQTH0F/xQBhgWAYQFgWAAYFgCGBYBhAWBYABgWAIYFgGEBYFgAGBYAhgWAYQFgWEAD125Ux0ua/ryVffb1spSSpg+VtZ144c+bic27f08RkZj0Ku8GJPEXq2LoKwFmwidKmh4tazsxIhpH58DWAkqaPljWdiINCZ/otffcU8F0is9+XH2vULv1jpnwQXQ8h2FLAYXarYtENIyO4zjwLAgMCwDDAsCwADCWCvh5XRubUytuK/vsdSydBa1W9bdTauVCSq0sBRUxHXRLalAR86NuqW/XlKKmoeHVqm402l/gG1TErCmkOOqW+mbFdS+cB+wt8F2t6pMNQhamo54sEakzUc8SOsBu0gsCmjGETKXUypRxJ6VW9GeHT89Fgq6vZqKeHDq4TnMSZkHibzfvvp9SK5+gA+kGJ0GArWEBYFgAGBYAhgWAYQFgWAAYFgCGBYBhAWBYABgWAIYFgGEBYFgAGBYAhgWAYQFgWAAYFgCGBYBhAWBsKeA115mLRFREx3EcenFhVtt8+HLwMhFdLmm6WNZ2YuYesTgRjaFja8aWAvYJSKIekMR0kpQ0PdwHfJaIYtduVKPGrXkdZyi2FtBM0qtsEdHVpFe5Sg+FuE0hCSKaRGzo6ysBzSS9yjoRXUl6lSvmltYJv+T8zzX+u0lfC2gkIIn3A5K4YHW/tpwFnSRYAJh2h6B/L18f8rnyHYqpr2hVwF5RmpDPNc8FHDrDUQJ6pYTJd9NRzxeAfrvOowT0QhGfMhFlp6Me1bidiXosnRpayQEB5xJjr5xLvITYFLfelPB1QAxWsPfBanygSYBlydeJaN5M+LyNE35kITdLT8SCimh8yt+KBF1Zefi0HTdn93Ypw1G3pI66JSu7tIK2inkO1Ov17oVmUzpZzpYFgOGfIsCwADAsAAwLAMMCwLAAMCwAzD8BAAD///J3XXpNNyydAAAAAElFTkSuQmCC" x="16" y="12" width="30" height="30" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
 <rect x="16.5" y="12.5" width="29" height="29" rx="8.4" fill="none" stroke="#fff" stroke-opacity=".35"/>
-<text x="58" y="33" class="mono" font-size="15"><tspan fill="#7f9cc6">bytedance/</tspan><tspan fill="#fff">deer-flow</tspan></text>
+<text x="58" y="33" class="mono" font-size="15"><tspan fill="#7f9cc6">bytedance/</tspan><tspan fill="#fff">UI-TARS-desktop</tspan></text>
 <rect x="370" y="15" width="82.8" height="24" rx="12" fill="#fff" fill-opacity=".06" stroke="#5cc4ff" stroke-opacity=".4"/>
-<text x="411.4" y="31.5" text-anchor="middle" class="mono" font-size="12" fill="#a8dcff">fix · mcp</text>
-<text x="464.8" y="33" class="sans" font-size="17" fill="#f1f8ff">Keep OAuth refresh waiters off the default executor</text>
-<text x="1098.5" y="33" text-anchor="end" class="mono" font-size="13.5" fill="#bcd5f2">★ 84k</text>
+<text x="411.4" y="31.5" text-anchor="middle" class="mono" font-size="12" fill="#a8dcff">fix · cli</text>
+<text x="464.8" y="33" class="sans" font-size="17" fill="#f1f8ff">Prevent 401/403 errors in cached headless runs</text>
+<text x="1098.5" y="33" text-anchor="end" class="mono" font-size="13.5" fill="#bcd5f2">★ 39k</text>
 <rect x="1114.5" y="14" width="61.5" height="26" rx="13" fill="#5cc4ff" fill-opacity=".14" stroke="#5cc4ff" stroke-opacity=".5"/>
 <text x="1145.25" y="31.5" text-anchor="middle" class="mono" font-size="12.5" fill="#a8dcff">审核中</text>
 </svg>
