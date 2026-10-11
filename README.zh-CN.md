@@ -36,7 +36,8 @@
   <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/zh/review-6.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
   <a href="https://github.com/modelscope/ms-agent/pull/1014"><img src="assets/live/zh/review-7.svg" width="100%" alt="modelscope/ms-agent: fix(llm): merge streamed tool calls by index"></a>
   <a href="https://github.com/MiniMax-AI/MiniMax-MCP/pull/107"><img src="assets/live/zh/review-8.svg" width="100%" alt="MiniMax-AI/MiniMax-MCP: Fix save failures caused by invalid filename characters"></a>
-  <a href="https://github.com/llm-d/llm-d-router/pull/3173"><img src="assets/live/zh/review-9.svg" width="100%" alt="llm-d/llm-d-router: fix: check projected request cost before flow-control release"></a>
+  <a href="https://github.com/Tencent-Hunyuan/UniRL/pull/585"><img src="assets/live/zh/review-9.svg" width="100%" alt="Tencent-Hunyuan/UniRL: refactor(train): share stack lifecycle and update reporting"></a>
+  <a href="https://github.com/llm-d/llm-d-router/pull/3173"><img src="assets/live/zh/review-10.svg" width="100%" alt="llm-d/llm-d-router: fix: check projected request cost before flow-control release"></a>
 </p>
 </details>
 
