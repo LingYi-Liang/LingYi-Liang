@@ -30,7 +30,7 @@
 <text x="44" y="122" class="mono" font-size="11.5" letter-spacing="2.2" fill="#93ccff">已合并</text>
 <text x="44" y="140" class="sans" font-size="13" fill="#7f9cc6">被上游接收</text>
 <line x1="44" y1="150" x2="300" y2="150" stroke="#a8dcff" stroke-opacity=".12"/>
-<text x="44" y="204" class="serif" font-size="46" fill="url(#num)">★ 451k</text>
+<text x="44" y="204" class="serif" font-size="46" fill="url(#num)">★ 452k</text>
 <text x="44" y="228" class="mono" font-size="11.5" letter-spacing="2.2" fill="#93ccff">合计星标</text>
 <text x="44" y="246" class="sans" font-size="13" fill="#7f9cc6">我参与的项目合计</text>
 <line x1="340" y1="40" x2="340" y2="236" stroke="#a8dcff" stroke-opacity=".14"/>

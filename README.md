@@ -43,7 +43,7 @@
   <a href="https://github.com/modelscope/ms-agent/pull/1014"><img src="assets/live/en/review-11.svg" width="100%" alt="modelscope/ms-agent: fix(llm): merge streamed tool calls by index"></a>
   <a href="https://github.com/trpc-group/trpc-agent-go/pull/2661"><img src="assets/live/en/review-12.svg" width="100%" alt="trpc-group/trpc-agent-go: {session, server/agui}: preserve same-time events during snapshot follow"></a>
   <a href="https://github.com/MiniMax-AI/MiniMax-MCP/pull/107"><img src="assets/live/en/review-13.svg" width="100%" alt="MiniMax-AI/MiniMax-MCP: Fix save failures caused by invalid filename characters"></a>
-  <a href="https://github.com/llm-d/llm-d-router/pull/3173"><img src="assets/live/en/review-14.svg" width="100%" alt="llm-d/llm-d-router: fix: check projected request cost before flow-control release"></a>
+  <a href="https://github.com/Tencent-Hunyuan/UniRL/pull/599"><img src="assets/live/en/review-14.svg" width="100%" alt="Tencent-Hunyuan/UniRL: fix(checkpoint): preserve trained LoRA biases on resume and export"></a>
 </p>
 </details>
 
