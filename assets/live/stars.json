@@ -1,15 +1,15 @@
 {
-  "bytedance/deer-flow": 83843,
-  "modelscope/ms-agent": 4411,
-  "Tencent/WeKnora": 33882,
-  "kvcache-ai/Mooncake": 6791,
-  "vllm-project/vllm": 93751,
-  "zai-org/Open-AutoGLM": 26395,
-  "bytedance/UI-TARS-desktop": 39271,
-  "apache/fory-site": 30,
-  "langgenius/dify": 158419,
-  "MiniMax-AI/MiniMax-MCP": 1585,
-  "trpc-group/trpc-agent-go": 1862,
-  "Tencent-Hunyuan/UniRL": 1014,
-  "llm-d/llm-d-router": 401
+  "Tencent/WeKnora": 34097,
+  "kvcache-ai/Mooncake": 6802,
+  "llm-d/llm-d-router": 405,
+  "langgenius/dify": 158520,
+  "zai-org/Open-AutoGLM": 26398,
+  "modelscope/ms-agent": 4412,
+  "vllm-project/vllm": 93825,
+  "bytedance/deer-flow": 83886,
+  "MiniMax-AI/MiniMax-MCP": 1587,
+  "bytedance/UI-TARS-desktop": 39279,
+  "trpc-group/trpc-agent-go": 1863,
+  "Tencent-Hunyuan/UniRL": 1016,
+  "apache/fory-site": 30
 }
