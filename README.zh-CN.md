@@ -36,14 +36,14 @@
   <a href="https://github.com/bytedance/deer-flow/pull/6765"><img src="assets/live/zh/review-4.svg" width="100%" alt="bytedance/deer-flow: test(frontend): account for native clipboard line endings"></a>
   <a href="https://github.com/bytedance/deer-flow/pull/6465"><img src="assets/live/zh/review-5.svg" width="100%" alt="bytedance/deer-flow: fix(mcp): keep OAuth refresh waiters off the default executor"></a>
   <a href="https://github.com/bytedance/UI-TARS-desktop/pull/2042"><img src="assets/live/zh/review-6.svg" width="100%" alt="bytedance/UI-TARS-desktop: fix(cli): prevent 401/403 errors in cached headless runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/zh/review-7.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/zh/review-8.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
-  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/zh/review-9.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4577"><img src="assets/live/zh/review-10.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Persist invalid memory descriptor removals during restore"></a>
-  <a href="https://github.com/modelscope/ms-agent/pull/1014"><img src="assets/live/zh/review-11.svg" width="100%" alt="modelscope/ms-agent: fix(llm): merge streamed tool calls by index"></a>
-  <a href="https://github.com/trpc-group/trpc-agent-go/pull/2661"><img src="assets/live/zh/review-12.svg" width="100%" alt="trpc-group/trpc-agent-go: {session, server/agui}: preserve same-time events during snapshot follow"></a>
-  <a href="https://github.com/MiniMax-AI/MiniMax-MCP/pull/107"><img src="assets/live/zh/review-13.svg" width="100%" alt="MiniMax-AI/MiniMax-MCP: Fix save failures caused by invalid filename characters"></a>
-  <a href="https://github.com/Tencent-Hunyuan/UniRL/pull/599"><img src="assets/live/zh/review-14.svg" width="100%" alt="Tencent-Hunyuan/UniRL: fix(checkpoint): preserve trained LoRA biases on resume and export"></a>
+  <a href="https://github.com/sgl-project/sglang/pull/44556"><img src="assets/live/zh/review-7.svg" width="100%" alt="sgl-project/sglang: [Fix] benchmark: handle metadata-only completion chunks"></a>
+  <a href="https://github.com/sgl-project/sglang/pull/44505"><img src="assets/live/zh/review-8.svg" width="100%" alt="sgl-project/sglang: [Fix] function-call: preserve quoted brackets in Pythonic streaming"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/zh/review-9.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/zh/review-10.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
+  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/zh/review-11.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
+  <a href="https://github.com/google/adk-python/pull/7568"><img src="assets/live/zh/review-12.svg" width="100%" alt="google/adk-python: perf(apps): avoid quadratic scans of compacted session history"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4684"><img src="assets/live/zh/review-13.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Add filtered task listing with bounded cursor pagination"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4577"><img src="assets/live/zh/review-14.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Persist invalid memory descriptor removals during restore"></a>
 </p>
 </details>
 
