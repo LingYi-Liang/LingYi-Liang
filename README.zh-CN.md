@@ -41,9 +41,9 @@
   <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/zh/review-9.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
   <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/zh/review-10.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
   <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/zh/review-11.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
-  <a href="https://github.com/google/adk-python/pull/7568"><img src="assets/live/zh/review-12.svg" width="100%" alt="google/adk-python: perf(apps): avoid quadratic scans of compacted session history"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4684"><img src="assets/live/zh/review-13.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Add filtered task listing with bounded cursor pagination"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4577"><img src="assets/live/zh/review-14.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Persist invalid memory descriptor removals during restore"></a>
+  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/zh/review-12.svg" width="100%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
+  <a href="https://github.com/cloudwego/eino/pull/1393"><img src="assets/live/zh/review-13.svg" width="100%" alt="cloudwego/eino: fix(adk): reject checkpoints from another session"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4684"><img src="assets/live/zh/review-14.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Add filtered task listing with bounded cursor pagination"></a>
 </p>
 </details>
 
