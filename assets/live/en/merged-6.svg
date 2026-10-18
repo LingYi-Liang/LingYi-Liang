@@ -47,6 +47,6 @@
 <line x1="26" y1="188" x2="252" y2="188" stroke="#fff" stroke-opacity=".12"/>
 <path d="M27 205l4 4l8 -8.5" fill="none" stroke="#b9a8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="46" y="210" class="mono" font-size="12.5" letter-spacing="1.8" fill="#b9a8ff">MERGED</text>
-<text x="252" y="210" text-anchor="end" class="mono" font-size="13" fill="#bcd5f2">★ 34k</text>
+<text x="252" y="210" text-anchor="end" class="mono" font-size="13" fill="#bcd5f2">★ 35k</text>
 </g>
 </svg>
