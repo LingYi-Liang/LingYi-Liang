@@ -17,33 +17,33 @@
 <p align="center"><a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests"><img src="assets/live/en/merged-head.svg" width="100%" alt=""></a></p>
 <p align="center">
   <a href="https://github.com/langgenius/dify/pull/43537"><img src="assets/live/en/merged-1.svg" width="24%" alt="langgenius/dify: refactor(api): separate console conversation variable queries"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/en/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/en/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/en/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/en/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/en/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/en/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/en/merged-6.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3944"><img src="assets/live/en/merged-7.svg" width="24%" alt="Tencent/WeKnora: fix(dataset): allow selecting the QA answer model"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/en/merged-8.svg" width="24%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/en/merged-6.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/en/merged-7.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/3944"><img src="assets/live/en/merged-8.svg" width="24%" alt="Tencent/WeKnora: fix(dataset): allow selecting the QA answer model"></a>
 </p>
 <details>
 <summary><img src="assets/live/en/review-head.svg" width="96%" alt="Pull requests in review (click to expand)"></summary>
 <p align="center">
-  <a href="https://github.com/vllm-project/vllm/pull/60493"><img src="assets/live/en/review-1.svg" width="100%" alt="vllm-project/vllm: [Bugfix] Reserve sparse MLA indexer metadata before sizing the KV cache"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/en/review-2.svg" width="100%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6465"><img src="assets/live/en/review-3.svg" width="100%" alt="bytedance/deer-flow: fix(mcp): keep OAuth refresh waiters off the default executor"></a>
-  <a href="https://github.com/bytedance/UI-TARS-desktop/pull/2042"><img src="assets/live/en/review-4.svg" width="100%" alt="bytedance/UI-TARS-desktop: fix(cli): prevent 401/403 errors in cached headless runs"></a>
-  <a href="https://github.com/sgl-project/sglang/pull/44556"><img src="assets/live/en/review-5.svg" width="100%" alt="sgl-project/sglang: [Fix] benchmark: handle metadata-only completion chunks"></a>
-  <a href="https://github.com/sgl-project/sglang/pull/44505"><img src="assets/live/en/review-6.svg" width="100%" alt="sgl-project/sglang: [Fix] function-call: preserve quoted brackets in Pythonic streaming"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/en/review-7.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/en/review-8.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
-  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/en/review-9.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
-  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/en/review-10.svg" width="100%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
-  <a href="https://github.com/cloudwego/eino/pull/1393"><img src="assets/live/en/review-11.svg" width="100%" alt="cloudwego/eino: fix(adk): reject checkpoints from another session"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4684"><img src="assets/live/en/review-12.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Add filtered task listing with bounded cursor pagination"></a>
-  <a href="https://github.com/kvcache-ai/Mooncake/pull/4577"><img src="assets/live/en/review-13.svg" width="100%" alt="kvcache-ai/Mooncake: [Store] Persist invalid memory descriptor removals during restore"></a>
-  <a href="https://github.com/vllm-project/aibrix/pull/3142"><img src="assets/live/en/review-14.svg" width="100%" alt="vllm-project/aibrix: [Bug] Re-subscribe KV events when a pod model or lora changes"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/62331"><img src="assets/live/en/review-1.svg" width="100%" alt="vllm-project/vllm: [Doc] Clarify structured-output constraints during reasoning"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/62328"><img src="assets/live/en/review-2.svg" width="100%" alt="vllm-project/vllm: [Frontend] Configure request body log level through LoggingConfig"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/62296"><img src="assets/live/en/review-3.svg" width="100%" alt="vllm-project/vllm: [Bugfix][Multimodal] Normalize native-rate PyAV audio"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/62292"><img src="assets/live/en/review-4.svg" width="100%" alt="vllm-project/vllm: [Bugfix][Benchmark] Fix standalone dataset statistics plotting"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/62281"><img src="assets/live/en/review-5.svg" width="100%" alt="vllm-project/vllm: [Bugfix] Preserve existing files when downloads fail before writing"></a>
+  <a href="https://github.com/vllm-project/vllm/pull/60493"><img src="assets/live/en/review-6.svg" width="100%" alt="vllm-project/vllm: [Bugfix] Reserve sparse MLA indexer metadata before sizing the KV cache"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6465"><img src="assets/live/en/review-7.svg" width="100%" alt="bytedance/deer-flow: fix(mcp): keep OAuth refresh waiters off the default executor"></a>
+  <a href="https://github.com/bytedance/UI-TARS-desktop/pull/2042"><img src="assets/live/en/review-8.svg" width="100%" alt="bytedance/UI-TARS-desktop: fix(cli): prevent 401/403 errors in cached headless runs"></a>
+  <a href="https://github.com/sgl-project/sglang/pull/44556"><img src="assets/live/en/review-9.svg" width="100%" alt="sgl-project/sglang: [Fix] benchmark: handle metadata-only completion chunks"></a>
+  <a href="https://github.com/sgl-project/sglang/pull/44505"><img src="assets/live/en/review-10.svg" width="100%" alt="sgl-project/sglang: [Fix] function-call: preserve quoted brackets in Pythonic streaming"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/en/review-11.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/en/review-12.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
+  <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/en/review-13.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
+  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/en/review-14.svg" width="100%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
 </p>
 </details>
 
