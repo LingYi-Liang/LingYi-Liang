@@ -17,15 +17,15 @@
 <p align="center"><a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests"><img src="assets/live/zh/merged-head.svg" width="100%" alt=""></a></p>
 <p align="center">
   <a href="https://github.com/langgenius/dify/pull/43537"><img src="assets/live/zh/merged-1.svg" width="24%" alt="langgenius/dify: refactor(api): separate console conversation variable queries"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/zh/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/zh/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/zh/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/7152"><img src="assets/live/zh/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(memory): preserve consecutive pre-compaction snapshots"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/zh/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/zh/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/zh/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/zh/merged-6.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/zh/merged-7.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3944"><img src="assets/live/zh/merged-8.svg" width="24%" alt="Tencent/WeKnora: fix(dataset): allow selecting the QA answer model"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/zh/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/zh/merged-6.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/zh/merged-7.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
+  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/zh/merged-8.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
 </p>
 <details>
 <summary><img src="assets/live/zh/review-head.svg" width="96%" alt="审核中的 PR（点击展开）"></summary>
@@ -43,7 +43,7 @@
   <a href="https://github.com/Tencent/WeKnora/pull/4291"><img src="assets/live/zh/review-11.svg" width="100%" alt="Tencent/WeKnora: feat(models): add Contextual AI rerank provider"></a>
   <a href="https://github.com/Tencent/WeKnora/pull/4289"><img src="assets/live/zh/review-12.svg" width="100%" alt="Tencent/WeKnora: feat(rerank): support DeepInfra native pairwise scores"></a>
   <a href="https://github.com/zai-org/Open-AutoGLM/pull/430"><img src="assets/live/zh/review-13.svg" width="100%" alt="zai-org/Open-AutoGLM: fix: restore the input method when Type fails or is interrupted"></a>
-  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/zh/review-14.svg" width="100%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
+  <a href="https://github.com/cloudwego/eino/pull/1393"><img src="assets/live/zh/review-14.svg" width="100%" alt="cloudwego/eino: fix(adk): reject checkpoints from another session"></a>
 </p>
 </details>
 
