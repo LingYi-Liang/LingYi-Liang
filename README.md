@@ -10,22 +10,38 @@
   <a href="mailto:lingyi01525@gmail.com"><img src="https://img.shields.io/badge/mail-lingyi01525%40gmail.com-7c5cff?style=flat-square&labelColor=0a1f52" alt="mail"></a>
 </p>
 
+**LingYi** · Independent researcher. I fix correctness and performance bugs in open-source AI infrastructure, mostly in two areas:
+
+- **Agent context & runtime**: context compaction, memory and concurrency in agent frameworks
+  - [google/adk-python#7568](https://github.com/google/adk-python/pull/7568) avoid quadratic scans of compacted session history
+  - [google/adk-python#7583](https://github.com/google/adk-python/pull/7583) recover the correct occurrence of reused compacted tool calls
+  - [bytedance/deer-flow#7152](https://github.com/bytedance/deer-flow/pull/7152) preserve consecutive pre-compaction memory snapshots
+  - [bytedance/deer-flow#6511](https://github.com/bytedance/deer-flow/pull/6511) avoid executor starvation while tools wait on file locks
+- **LLM serving & KV cache**: keeping prefix-cache state correct as pods, models and event streams change
+  - [vllm-project/aibrix#3140](https://github.com/vllm-project/aibrix/pull/3140) drop duplicate or out-of-order KV event batches and recover from publisher restarts
+  - [vllm-project/aibrix#3141](https://github.com/vllm-project/aibrix/pull/3141) drop reverse index entries when a pod leaves the prefix cache
+  - [vllm-project/aibrix#3142](https://github.com/vllm-project/aibrix/pull/3142) re-subscribe KV events when a pod switches model or LoRA
+  - [kvcache-ai/Mooncake#4486](https://github.com/kvcache-ai/Mooncake/pull/4486) stop releasing pending task quota twice after history pruning
+- **Formal mathematics**: [a Lean 4 formalization that spectral sets tile in cyclic groups of square-free order](https://github.com/LingYi-Liang/squarefree-fuglede-lean)
+
+**24 pull requests merged into 8 projects** · [see them all](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests)<br><sub>Google ADK merges outside pull requests through an internal sync, so GitHub lists those as closed.</sub>
+
 <p align="center"><img src="assets/en/dividers/prs.svg" width="100%" alt=""></p>
 <p align="center">
-  <a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr&type=pullrequests"><img src="assets/live/en/prs-summary.svg" width="100%" alt="AI infra · full-stack: merged pull requests and the organisations I contribute to"></a>
+  <a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr&type=pullrequests"><img src="assets/live/en/prs-summary.svg" width="100%" alt="Merged pull requests and the projects they went into"></a>
 </p>
 <p align="center"><a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests"><img src="assets/live/en/merged-head.svg" width="100%" alt=""></a></p>
 <p align="center">
-  <a href="https://github.com/langgenius/dify/pull/43537"><img src="assets/live/en/merged-1.svg" width="24%" alt="langgenius/dify: refactor(api): separate console conversation variable queries"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/7152"><img src="assets/live/en/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(memory): preserve consecutive pre-compaction snapshots"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/en/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/en/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
+  <a href="https://github.com/google/adk-python/pull/7568"><img src="assets/live/en/merged-1.svg" width="24%" alt="google/adk-python: perf(apps): avoid quadratic scans of compacted session history"></a>
+  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/en/merged-2.svg" width="24%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/7152"><img src="assets/live/en/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(memory): preserve consecutive pre-compaction snapshots"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/en/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/en/merged-6.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/en/merged-7.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/en/merged-8.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3140"><img src="assets/live/en/merged-5.svg" width="24%" alt="vllm-project/aibrix: [Bug] Drop duplicate KV event batches and recover from publisher restarts"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3141"><img src="assets/live/en/merged-6.svg" width="24%" alt="vllm-project/aibrix: [Bug] Drop reverse index entries when a pod leaves the prefix cache"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3142"><img src="assets/live/en/merged-7.svg" width="24%" alt="vllm-project/aibrix: [Bug] Re-subscribe KV events when a pod model or lora changes"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/en/merged-8.svg" width="24%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
 </p>
 <details>
 <summary><img src="assets/live/en/review-head.svg" width="96%" alt="Pull requests in review (click to expand)"></summary>

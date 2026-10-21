@@ -10,22 +10,38 @@
   <a href="mailto:lingyi01525@gmail.com"><img src="https://img.shields.io/badge/%E9%82%AE%E7%AE%B1-lingyi01525%40gmail.com-7c5cff?style=flat-square&labelColor=0a1f52" alt="邮箱"></a>
 </p>
 
+**LingYi** · 独立研究者。我在开源 AI 基础设施里修正确性和性能问题，主要集中在两个方向：
+
+- **Agent 上下文与运行时**：智能体框架里的上下文压缩、记忆与并发
+  - [google/adk-python#7568](https://github.com/google/adk-python/pull/7568) 消除压缩后会话历史的平方级扫描
+  - [google/adk-python#7583](https://github.com/google/adk-python/pull/7583) 压缩后重复出现的工具调用能找回正确的那一次
+  - [bytedance/deer-flow#7152](https://github.com/bytedance/deer-flow/pull/7152) 连续压缩时保留每一份压缩前的记忆快照
+  - [bytedance/deer-flow#6511](https://github.com/bytedance/deer-flow/pull/6511) 工具等待文件锁时不再把执行器线程占满
+- **大模型推理服务与 KV 缓存**：在节点、模型和事件流变化时保证前缀缓存的状态正确
+  - [vllm-project/aibrix#3140](https://github.com/vllm-project/aibrix/pull/3140) KV 事件批次去重、补齐缺口，发布端重启后能恢复
+  - [vllm-project/aibrix#3141](https://github.com/vllm-project/aibrix/pull/3141) 节点离开前缀缓存时清理反向索引，不再随节点更替无限增长
+  - [vllm-project/aibrix#3142](https://github.com/vllm-project/aibrix/pull/3142) 节点切换模型或 LoRA 时重新订阅 KV 事件并清掉旧条目
+  - [kvcache-ai/Mooncake#4486](https://github.com/kvcache-ai/Mooncake/pull/4486) 清理任务历史后不再重复释放待处理配额
+- **形式化数学**：[用 Lean 4 形式化证明：平方自由阶循环群中的谱集都能铺砌](https://github.com/LingYi-Liang/squarefree-fuglede-lean)
+
+**已合并 24 个 PR，涉及 8 个项目** · [查看全部](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests)<br><sub>Google ADK 通过内部同步合入外部 PR，所以 GitHub 上这几个显示为“已关闭”。</sub>
+
 <p align="center"><img src="assets/zh/dividers/prs.svg" width="100%" alt=""></p>
 <p align="center">
-  <a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr&type=pullrequests"><img src="assets/live/zh/prs-summary.svg" width="100%" alt="AI 基础设施 · 全栈：已合并的 PR 和参与贡献的组织"></a>
+  <a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr&type=pullrequests"><img src="assets/live/zh/prs-summary.svg" width="100%" alt="已合并的 PR 和对应的上游项目"></a>
 </p>
 <p align="center"><a href="https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests"><img src="assets/live/zh/merged-head.svg" width="100%" alt=""></a></p>
 <p align="center">
-  <a href="https://github.com/langgenius/dify/pull/43537"><img src="assets/live/zh/merged-1.svg" width="24%" alt="langgenius/dify: refactor(api): separate console conversation variable queries"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/7152"><img src="assets/live/zh/merged-2.svg" width="24%" alt="bytedance/deer-flow: fix(memory): preserve consecutive pre-compaction snapshots"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6768"><img src="assets/live/zh/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): ignore message edit shortcuts during IME composition"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6756"><img src="assets/live/zh/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(frontend): align one-time DST conversion with the scheduler"></a>
+  <a href="https://github.com/google/adk-python/pull/7568"><img src="assets/live/zh/merged-1.svg" width="24%" alt="google/adk-python: perf(apps): avoid quadratic scans of compacted session history"></a>
+  <a href="https://github.com/google/adk-python/pull/7583"><img src="assets/live/zh/merged-2.svg" width="24%" alt="google/adk-python: fix(compaction): recover the correct occurrence of reused tool calls"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/7152"><img src="assets/live/zh/merged-3.svg" width="24%" alt="bytedance/deer-flow: fix(memory): preserve consecutive pre-compaction snapshots"></a>
+  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/zh/merged-4.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/bytedance/deer-flow/pull/6476"><img src="assets/live/zh/merged-5.svg" width="24%" alt="bytedance/deer-flow: fix(channels): preserve inbound files on concurrent uploads"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6511"><img src="assets/live/zh/merged-6.svg" width="24%" alt="bytedance/deer-flow: fix(agents): avoid executor starvation in file-gate waits"></a>
-  <a href="https://github.com/bytedance/deer-flow/pull/6302"><img src="assets/live/zh/merged-7.svg" width="24%" alt="bytedance/deer-flow: fix(tui): isolate callbacks from interrupted runs"></a>
-  <a href="https://github.com/Tencent/WeKnora/pull/3973"><img src="assets/live/zh/merged-8.svg" width="24%" alt="Tencent/WeKnora: fix(docreader): preserve PPTX fallback image associations"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3140"><img src="assets/live/zh/merged-5.svg" width="24%" alt="vllm-project/aibrix: [Bug] Drop duplicate KV event batches and recover from publisher restarts"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3141"><img src="assets/live/zh/merged-6.svg" width="24%" alt="vllm-project/aibrix: [Bug] Drop reverse index entries when a pod leaves the prefix cache"></a>
+  <a href="https://github.com/vllm-project/aibrix/pull/3142"><img src="assets/live/zh/merged-7.svg" width="24%" alt="vllm-project/aibrix: [Bug] Re-subscribe KV events when a pod model or lora changes"></a>
+  <a href="https://github.com/kvcache-ai/Mooncake/pull/4486"><img src="assets/live/zh/merged-8.svg" width="24%" alt="kvcache-ai/Mooncake: [Store] Preserve pending task quota after terminal history pruning"></a>
 </p>
 <details>
 <summary><img src="assets/live/zh/review-head.svg" width="96%" alt="审核中的 PR（点击展开）"></summary>
