@@ -93,7 +93,9 @@ export function universeSvg(lang, upstream) {
     ${keyRow(0, U.keyMerged, (x, y) => `<circle cx="${x}" cy="${y}" r="5.5" fill="url(#sphM)"/><ellipse cx="${x}" cy="${y}" rx="10" ry="3" fill="none" stroke="#e2d8ff" transform="rotate(-18 ${x} ${y})"/>`)}
     ${keyRow(1, U.keyReview, (x, y) => `<circle cx="${x}" cy="${y}" r="5.5" fill="url(#sphR)"/>`)}
     ${keyRow(2, U.keyOwn, (x, y) => `<circle cx="${x}" cy="${y}" r="5.5" fill="url(#sphA)"/><ellipse cx="${x}" cy="${y}" rx="10" ry="3" fill="none" stroke="#d8f0ff" transform="rotate(-18 ${x} ${y})"/>`)}
-    ${keyRow(3, U.keyUncharted, (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${C.lilac}" stroke-dasharray="2 2.4"/>`)}
+    ${rings.some((ring) => ring.planets.some((p) => p.kind === 'uncharted'))
+      ? keyRow(3, U.keyUncharted, (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${C.lilac}" stroke-dasharray="2 2.4"/>`)
+      : ''}
   </g>`;
 
   return `${svgOpen(W, H, T({ en: 'Research universe: mathematics, my projects, and the projects my pull requests went to', zh: '研究宇宙：数学、我的项目、我提交 PR 的上游项目' }))}

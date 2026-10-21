@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import {
   LANGS, C, FONT_CSS, rng, esc, f, textWidth, wrap, fit, starfield, panel, svgOpen, clean, numGrad, stat,
 } from './theme.mjs';
-import { LOGIN as DEFAULT_LOGIN, SITE, EMAIL, ORGS, HEADLINE, AI_DISCLOSURE, tr } from './content.mjs';
+import { LOGIN as DEFAULT_LOGIN, SITE, EMAIL, PROJECTS, HEADLINE, INTRO, SYNCED_MERGES, AI_DISCLOSURE, tr } from './content.mjs';
 import { universeSvg } from './universe.mjs';
 import { deckSvg } from './deck.mjs';
 import { ocJourney } from './oc.mjs';
@@ -30,7 +30,7 @@ const HEADERS = {
 
 const I18N = {
   en: {
-    merged: 'MERGED', mergedSub: 'accepted upstream', stars: 'COMBINED STARS', starsSub: 'of the projects I contribute to',
+    merged: 'MERGED', mergedSub: 'accepted upstream', projects: 'PROJECTS', projectsSub: 'with merged work',
     mergedHead: 'MERGED UPSTREAM', badge: 'MERGED', clickHint: 'click any card or row to open the PR', hi: 'hi!', bye: 'bye~',
     review: 'IN REVIEW', reviewNote: 'click to expand · sorted by project size', inReview: 'in review',
     contributions: 'CONTRIBUTIONS', contributionsSub: 'in the past year', bright: 'BRIGHT NIGHTS', brightSub: 'days with activity',
@@ -39,7 +39,7 @@ const I18N = {
     synced: 'synced',
   },
   zh: {
-    merged: '已合并', mergedSub: '被上游接收', stars: '合计星标', starsSub: '我参与的项目合计',
+    merged: '已合并', mergedSub: '被上游接收', projects: '项目', projectsSub: '有代码被合并',
     mergedHead: '已合并到上游', badge: '已合并', clickHint: '点击任意卡片或行可打开对应 PR', hi: '你好~', bye: '拜拜~',
     review: '审核中', reviewNote: '点击展开 · 按项目规模排序', inReview: '审核中',
     contributions: '贡献', contributionsSub: '过去一年', bright: '亮星之夜', brightSub: '有贡献的天数',
@@ -94,14 +94,21 @@ async function pullRequests() {
     items.push(...j.items);
     if (j.items.length < 100 || items.length >= j.total_count) break;
   }
+  // A PR in SYNCED_MERGES was merged through an upstream internal sync: GitHub shows it closed.
+  const synced = new Set(SYNCED_MERGES);
   const prs = items
-    .map((i) => ({
-      repo: i.repository_url.split('/repos/')[1],
-      title: i.title.trim(),
-      url: i.html_url,
-      state: i.pull_request?.merged_at ? 'merged' : i.state === 'open' ? 'open' : 'closed',
-      date: i.pull_request?.merged_at || i.created_at,
-    }))
+    .map((i) => {
+      const viaSync = i.state === 'closed' && !i.pull_request?.merged_at && synced.has(i.html_url);
+      const merged = Boolean(i.pull_request?.merged_at) || viaSync;
+      return {
+        repo: i.repository_url.split('/repos/')[1],
+        title: i.title.trim(),
+        url: i.html_url,
+        state: merged ? 'merged' : i.state === 'open' ? 'open' : 'closed',
+        date: i.pull_request?.merged_at || (viaSync && i.closed_at) || i.created_at,
+        viaSync,
+      };
+    })
     .filter((p) => p.state !== 'closed' && p.repo.split('/')[0].toLowerCase() !== LOGIN.toLowerCase());
   let cached = {};
   try {
@@ -120,10 +127,14 @@ async function pullRequests() {
     }),
   );
   const bySize = (a, b) => (stars[b.repo] || 0) - (stars[a.repo] || 0) || b.date.localeCompare(a.date);
+  // Merged cards: the PRs featured in INTRO first (in their listed order), then the newest.
+  const featured = INTRO.tracks.flatMap((t) => t.prs.map((p) => p.url));
+  const rank = (p) => (featured.includes(p.url) ? featured.indexOf(p.url) : featured.length);
+  const byFeature = (a, b) => rank(a) - rank(b) || b.date.localeCompare(a.date);
   return {
     prs,
     stars,
-    merged: prs.filter((p) => p.state === 'merged').sort(bySize),
+    merged: prs.filter((p) => p.state === 'merged').sort(byFeature),
     open: prs.filter((p) => p.state === 'open').sort(bySize),
     repos: [...new Set(prs.map((p) => p.repo))].sort((a, b) => (stars[b] || 0) - (stars[a] || 0)),
   };
@@ -181,29 +192,28 @@ function monogram(name) {
 
 // ───────────── panels ─────────────
 
-// Left: merged and combined stars. Right: the headline, who I contribute to, and what I work on.
+// Left: merged PRs and the projects they went into. Right: the headline, those projects
+// (merged work only, most merged first, with the count on each logo), and what I work on.
 function summarySvg(data, L, lang, avatars) {
-  const { merged, repos, stars } = data;
+  const { merged, stars } = data;
   const W = 1200, H = 270, rand = rng(31);
   const T = (v) => tr(v, lang);
   const p = panel('m', W, H, { seed: 21 });
-  const reach = repos.reduce((s, r) => s + (stars[r] || 0), 0);
 
-  // Owners: big companies first (in ORGS order), then the rest by combined stars.
-  const ownerStars = {};
-  for (const r of repos) ownerStars[r.split('/')[0]] = (ownerStars[r.split('/')[0]] || 0) + (stars[r] || 0);
-  const order = Object.keys(ORGS);
-  const owners = Object.keys(ownerStars).sort((a, b) => {
-    const ba = ORGS[a]?.big ? 0 : 1, bb = ORGS[b]?.big ? 0 : 1;
-    return ba - bb || (ba === 0 ? order.indexOf(a) - order.indexOf(b) : ownerStars[b] - ownerStars[a]);
-  });
-  const x0 = 384, span = 1160 - x0, slot = Math.min(84, span / Math.max(1, owners.length));
-  const logos = owners.map((o, i) => {
-    const big = ORGS[o]?.big, size = big ? 48 : 40, cx = x0 + slot * (i + 0.5), top = big ? 124 : 128;
-    const name = T(ORGS[o] || { en: o, zh: o });
+  const counts = {};
+  for (const pr of merged) counts[pr.repo] = (counts[pr.repo] || 0) + 1;
+  const projects = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || (stars[b] || 0) - (stars[a] || 0));
+  const nameOf = (repo) => PROJECTS[repo] || repo.split('/')[1];
+  const x0 = 384, span = 1160 - x0, slot = Math.min(84, span / Math.max(1, projects.length));
+  const logos = projects.map((repo, i) => {
+    const owner = repo.split('/')[0], n = String(counts[repo]);
+    const big = counts[repo] >= 3, size = big ? 48 : 40, cx = x0 + slot * (i + 0.5), top = big ? 124 : 128;
+    const bx = cx + size / 2 - 3, by = top + 3, bw = 12 + textWidth(n, 11, true);
     return `${big ? `<circle cx="${f(cx)}" cy="${top + size / 2}" r="${size * 0.8}" fill="url(#halo)"/>` : ''}
-      ${logo(avatars[o], cx - size / 2, top, size, o.slice(0, 2).toUpperCase())}
-      <text x="${f(cx)}" y="196" text-anchor="middle" class="sans" font-size="12.5" font-weight="${big ? 600 : 400}" fill="${big ? '#fff' : C.textDim}">${esc(fit(name, slot - 6, 12.5))}</text>`;
+      ${logo(avatars[owner], cx - size / 2, top, size, monogram(repo.split('/')[1]))}
+      <rect x="${f(bx - bw / 2)}" y="${by - 9}" width="${f(bw)}" height="18" rx="9" fill="${C.violet}" stroke="#fff" stroke-opacity=".55"/>
+      <text x="${f(bx)}" y="${by + 4}" text-anchor="middle" class="mono" font-size="11" font-weight="600" fill="#fff">${esc(n)}</text>
+      <text x="${f(cx)}" y="196" text-anchor="middle" class="sans" font-size="12.5" font-weight="${big ? 600 : 400}" fill="${big ? '#fff' : C.textDim}">${esc(fit(nameOf(repo), slot - 6, 12.5))}</text>`;
   }).join('');
   let cx = x0;
   const chips = HEADLINE.directions.map((d) => {
@@ -214,7 +224,7 @@ function summarySvg(data, L, lang, avatars) {
     return out;
   }).join('');
 
-  return `${svgOpen(W, H, `${T(HEADLINE.title)} — ${merged.length} merged pull requests, contributor to ${owners.join(', ')}`)}
+  return `${svgOpen(W, H, `${T(HEADLINE.title)} — ${merged.length} merged pull requests in ${projects.length} projects: ${projects.map(nameOf).join(', ')}`)}
   <defs>${p.defs}${numGrad}${logoClipDef}
     <radialGradient id="halo"><stop offset="0" stop-color="${C.violet}" stop-opacity=".45"/><stop offset="1" stop-color="${C.violet}" stop-opacity="0"/></radialGradient>
     <linearGradient id="title" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="${C.haze}"/><stop offset="1" stop-color="${C.lilac}"/></linearGradient>
@@ -225,7 +235,7 @@ function summarySvg(data, L, lang, avatars) {
     ${starfield(rand, { w: W, h: H, n: 70, maxR: 1, twinkle: 0.25 })}
     ${stat(44, 98, merged.length, L.merged, L.mergedSub, 'numM')}
     <line x1="44" y1="150" x2="300" y2="150" stroke="${C.sky}" stroke-opacity=".12"/>
-    ${stat(44, 204, '★ ' + kfmt(reach), L.stars, L.starsSub)}
+    ${stat(44, 204, projects.length, L.projects, L.projectsSub)}
     <line x1="340" y1="40" x2="340" y2="236" stroke="${C.sky}" stroke-opacity=".14"/>
     <text x="${x0}" y="80" class="${lang === 'zh' ? 'sans' : 'serif'}" font-size="38" font-weight="${lang === 'zh' ? 600 : 400}" fill="url(#title)">${esc(T(HEADLINE.title))}</text>
     <text x="${x0}" y="108" class="mono" font-size="11.5" letter-spacing="3" fill="${C.label}">${esc(T(HEADLINE.kicker))}</text>
@@ -339,7 +349,9 @@ const README_TEXT = {
   en: {
     file: 'README.md', alt: 'English', otherAlt: '切换到中文',
     header: 'LingYi — LLM reasoning & efficient learning · mathematics researcher',
-    site: 'site', mail: 'mail', summaryAlt: 'AI infra · full-stack: merged pull requests and the organisations I contribute to',
+    site: 'site', mail: 'mail', summaryAlt: 'Merged pull requests and the projects they went into',
+    count: (n, m) => `${n} pull requests merged into ${m} projects`, all: 'see them all',
+    syncNote: 'Google ADK merges outside pull requests through an internal sync, so GitHub lists those as closed.',
     reviewAlt: 'Pull requests in review (click to expand)',
     universeAlt: 'Orbit I mathematics, orbit II my projects, orbit III the projects my pull requests went to',
     deckAlt: 'The past year of contributions as a starfield, swept by a small black hole',
@@ -348,7 +360,9 @@ const README_TEXT = {
   zh: {
     file: 'README.zh-CN.md', alt: '中文', otherAlt: 'Switch to English',
     header: 'LingYi — LLM 推理与高效学习 · 数学研究者',
-    site: '个人主页', mail: '邮箱', summaryAlt: 'AI 基础设施 · 全栈：已合并的 PR 和参与贡献的组织',
+    site: '个人主页', mail: '邮箱', summaryAlt: '已合并的 PR 和对应的上游项目',
+    count: (n, m) => `已合并 ${n} 个 PR，涉及 ${m} 个项目`, all: '查看全部',
+    syncNote: 'Google ADK 通过内部同步合入外部 PR，所以 GitHub 上这几个显示为“已关闭”。',
     reviewAlt: '审核中的 PR（点击展开）',
     universeAlt: '轨道 I 数学，轨道 II 我的项目，轨道 III 我提交 PR 的上游项目',
     deckAlt: '过去一年的贡献画成星空，一个小黑洞正在扫过',
@@ -376,6 +390,26 @@ function readme(lang, data) {
   const review = data.open.slice(0, MAX_REVIEW).map((pr, i) =>
     `  <a href="${pr.url}"><img src="${LIVE}/review-${i + 1}.svg" width="100%" alt="${esc(pr.repo)}: ${esc(pr.title)}"></a>`);
 
+  // Plain-text introduction. A featured PR is listed only once it is actually merged.
+  const T = (v) => tr(v, lang);
+  const mergedUrls = new Set(data.merged.map((pr) => pr.url));
+  const ref = (url) => url.replace(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/pull\/(\d+)$/, '$1#$2');
+  const sep = lang === 'zh' ? '：' : ': ';
+  const tracks = INTRO.tracks.map((t) => [
+    `- **${T(t.title)}**${sep}${T(t.note)}`,
+    ...t.prs.filter((pr) => mergedUrls.has(pr.url)).map((pr) => `  - [${ref(pr.url)}](${pr.url}) ${T(pr)}`),
+  ].join('\n'));
+  const projectCount = new Set(data.merged.map((pr) => pr.repo)).size;
+  const synced = data.merged.some((pr) => pr.viaSync);
+  const intro = [
+    `**${INTRO.name}** · ${T(INTRO.lead)}`,
+    '',
+    ...tracks,
+    `- **${T(INTRO.math.title)}**${sep}[${T(INTRO.math.text)}](${INTRO.math.url})`,
+    '',
+    `**${R.count(data.merged.length, projectCount)}** · [${R.all}](${search('is:merged')})${synced ? `<br><sub>${R.syncNote}</sub>` : ''}`,
+  ].join('\n');
+
   return `<!-- Generated by scripts/observatory.mjs — edit scripts/content.mjs, not this file. -->
 <p align="left">${sw}</p>
 
@@ -387,6 +421,8 @@ function readme(lang, data) {
   ${badge(R.site, SITE.replace('https://', ''), '2a7fd4', SITE)}
   ${badge(R.mail, EMAIL, '7c5cff', `mailto:${EMAIL}`)}
 </p>
+
+${intro}
 
 <p align="center"><img src="${A}/dividers/prs.svg" width="100%" alt=""></p>
 <p align="center">
