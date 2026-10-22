@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["scripts/**", ".github/workflows/observatory.yml"]
+    paths: ["scripts/**", "assets/art/**", "assets/oc/hero/**", ".github/workflows/observatory.yml"]
 
 permissions:
   contents: write
@@ -29,5 +29,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/live assets/orgs README.md README.zh-CN.md
-          git diff --cached --quiet || git commit -m "chore: refresh observatory panels"
+          git diff --cached --quiet || git commit -m "chore: refresh profile data"
           git push

@@ -1,28 +1,20 @@
 // Shared palette + SVG helpers for the observatory art.
 // Azure sky (青空) with deep-blue and violet ink-wash (墨染) accents.
+import { readFileSync } from 'node:fs';
 
 export const LANGS = ['en', 'zh'];
 
 export const C = {
-  abyss: '#040b22',
-  deep: '#0a1f52',
-  cobalt: '#1650a8',
-  cerulean: '#2a7fd4',
   azure: '#4fb3ff',
   sky: '#a8dcff',
   haze: '#e4f5ff',
-  inkBlue: '#050c2a',
-  inkPurple: '#2c1a5e',
   violet: '#7c5cff',
   lilac: '#b9a8ff',
-  merged: '#a98bff',
   review: '#5cc4ff',
   text: '#f1f8ff',
   textDim: '#bcd5f2',
   textFaint: '#7f9cc6',
   label: '#93ccff',
-  ink: '#030a1e', // silhouettes
-  mid: '#6b80dc', // readable on both GitHub light and dark backgrounds
 };
 
 export const FONT_CSS = `
@@ -73,23 +65,6 @@ export function textWidth(s, size, mono = false) {
   return w * size;
 }
 
-export function wrap(s, maxW, size, maxLines = 3) {
-  const words = s.split(/\s+/);
-  const lines = [];
-  let cur = '';
-  for (const w of words) {
-    const next = cur ? cur + ' ' + w : w;
-    if (textWidth(next, size) <= maxW || !cur) cur = next;
-    else lines.push(cur), (cur = w);
-  }
-  if (cur) lines.push(cur);
-  if (lines.length > maxLines) {
-    lines.length = maxLines;
-    lines[maxLines - 1] = lines[maxLines - 1].replace(/\s*\S*$/, '') + ' …';
-  }
-  return lines;
-}
-
 export function fit(s, maxW, size, mono = false) {
   if (textWidth(s, size, mono) <= maxW) return s;
   let t = s;
@@ -137,24 +112,14 @@ export function pentagram(t, R) {
 export const glowFilter = (id, sd = 3) =>
   `<filter id="${id}" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${sd}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
 
-// Ink-wash: turbulence-displaced, blurred blobs.
-export const inkFilter = (id, { freq = 0.011, scale = 70, blur = 9, seed = 3 } = {}) =>
-  `<filter id="${id}" x="-30%" y="-40%" width="160%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="3" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${scale}" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="${blur}"/></filter>`;
-
-// Deep-blue glass panel with violet ink in the corners, shared by cards and data panels.
-export function panel(id, w, h, { rx = 20, seed = 5, ink = true } = {}) {
+// Panels sit on a darkened slice of the hero's painted sky (assets/art, see tools/art), so the page reads as
+// one night sky. `flip` mirrors it, so neighbouring panels don't repeat the same clouds.
+const PANEL_SKY = 'data:image/webp;base64,' + readFileSync(new URL('../assets/art/panel-sky.webp', import.meta.url)).toString('base64');
+export function panel(id, w, h, { rx = 20, flip = false } = {}) {
   return {
-    defs: `<linearGradient id="${id}Bg" x1="0" y1="0" x2=".35" y2="1">
-      <stop offset="0" stop-color="#071433"/><stop offset=".6" stop-color="#0b1f52"/><stop offset="1" stop-color="#132a6c"/></linearGradient>
-      <radialGradient id="${id}Hi" cx=".25" cy="0" r=".9"><stop offset="0" stop-color="${C.azure}" stop-opacity=".16"/><stop offset="1" stop-color="${C.azure}" stop-opacity="0"/></radialGradient>
-      ${inkFilter(id + 'Ink', { seed, scale: 60, blur: 10 })}
-      <clipPath id="${id}Clip"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>`,
-    bg: `<rect width="${w}" height="${h}" rx="${rx}" fill="url(#${id}Bg)"/>
-      <rect width="${w}" height="${h}" fill="url(#${id}Hi)"/>
-      ${ink ? `<g filter="url(#${id}Ink)">
-        <ellipse cx="${f(w * 0.92)}" cy="${f(h * 0.95)}" rx="${f(Math.min(380, w * 0.4))}" ry="${f(Math.min(150, h * 0.45))}" fill="#3a2478" opacity=".55"/>
-        <ellipse cx="${f(w * 0.05)}" cy="${f(h * 0.02)}" rx="${f(Math.min(300, w * 0.3))}" ry="${f(Math.min(110, h * 0.35))}" fill="${C.inkBlue}" opacity=".7"/>
-      </g>` : ''}`,
+    defs: `<clipPath id="${id}Clip"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>`,
+    bg: `<rect width="${w}" height="${h}" fill="#050c26"/>
+      <image href="${PANEL_SKY}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"${flip ? ` transform="translate(${w} 0) scale(-1 1)"` : ''}/>`,
     border: `<rect x=".75" y=".75" width="${w - 1.5}" height="${h - 1.5}" rx="${rx - 0.5}" fill="none" stroke="${C.sky}" stroke-opacity=".2" stroke-width="1.5"/>`,
   };
 }
@@ -163,13 +128,3 @@ export const svgOpen = (w, h, title) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>`;
 
 export const clean = (s) => s.replace(/\n\s+/g, '\n');
-
-export const numGrad = `<linearGradient id="num" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="${C.sky}"/></linearGradient>
-  <linearGradient id="numM" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="${C.lilac}"/></linearGradient>`;
-
-// Big number + small caps label + caption.
-export function stat(x, y, value, label, sub, grad = 'num') {
-  return `<text x="${f(x)}" y="${y}" class="serif" font-size="46" fill="url(#${grad})">${esc(value)}</text>
-    <text x="${f(x)}" y="${y + 24}" class="mono" font-size="11.5" letter-spacing="2.2" fill="${C.label}">${esc(label)}</text>
-    <text x="${f(x)}" y="${y + 42}" class="sans" font-size="13" fill="${C.textFaint}">${esc(sub)}</text>`;
-}

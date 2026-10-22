@@ -1,0 +1,8 @@
+A wide anime background painting in the style of Makoto Shinkai / CoMix Wave Films: a clear azure night sky ("青空之蓝"), seen from a low grassy hilltop.
+- Sky: deep navy at the very top, fading through cobalt into luminous cerulean and pale sky-blue near the horizon. The brightest glow sits LOW on the RIGHT third of the image, just above the hill line.
+- Long-exposure STAR TRAILS: many fine, thin light streaks arcing gently and diagonally across the sky (white, pale blue and a few faint lavender), plus scattered tiny bright stars. Elegant, not busy.
+- Ink-wash (sumi-e) cloud accents: soft deep-indigo and violet ink clouds bleeding in from the TOP-LEFT and TOP-RIGHT corners, with a faint violet wisp across the middle. Subtle, translucent, painterly edges.
+- Ground: a low, gently curving hill silhouette in near-black navy running along the bottom edge; its crest is slightly higher toward the right. A faint cool rim light on the crest.
+- Composition for a 4:1 website banner: keep everything important inside the middle horizontal band of the image (from about 25% to 75% of the height). The hill crest must be at about 70% of the image height. The LEFT 55% of the band must stay darker, calm and low in detail, because white text will be placed there.
+- Absolutely NO people, NO characters, NO animals, NO buildings, NO telescopes, NO text, NO letters, NO logos, NO watermark, NO border.
+- Clean, premium, high-detail painting, gentle film grain at most, landscape 1536x1024.

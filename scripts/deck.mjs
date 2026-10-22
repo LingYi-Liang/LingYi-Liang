@@ -1,25 +1,11 @@
 // Observation deck: the past year of contributions as a starfield, swept by a small black hole.
 // The hole drifts left to right; every star within reach of its gravity spirals in (bright ones
 // flare as they're torn apart), then the sky refills from left to right and the loop starts over.
-import { C, FONT_CSS, rng, esc, f, sparkle, glowFilter, panel, svgOpen, starfield, numGrad, stat } from './theme.mjs';
+import { C, FONT_CSS, rng, esc, f, sparkle, glowFilter, panel, svgOpen, starfield } from './theme.mjs';
 
 const LOOP = 40; // seconds per sweep + refill
 const TRAVEL = 0.86; // fraction of the loop spent crossing the grid
 const PULL = 92; // gravitational reach, px
-
-function streaks(days) {
-  const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date));
-  let longest = 0, run = 0;
-  for (const d of sorted) {
-    run = d.count > 0 ? run + 1 : 0;
-    longest = Math.max(longest, run);
-  }
-  let i = sorted.length - 1;
-  if (i >= 0 && sorted[i].count === 0) i--; // today isn't over yet
-  let current = 0;
-  while (i >= 0 && sorted[i].count > 0) current++, i--;
-  return { current, longest };
-}
 
 const pct = (t) => f(t * 100) + '%';
 
@@ -63,18 +49,17 @@ function blackHoleDefs() {
     <filter id="bhGlow" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
 }
 
-export function deckSvg(days, L, today, lang) {
-  const W = 1200, H = 404, rand = rng(47);
-  const p = panel('d', W, H, { seed: 41 });
-  const total = days.reduce((s, d) => s + d.count, 0);
+// L: { title, note, quiet, bright } in the page language.
+export function deckSvg(days, L, lang) {
+  const W = 1200, H = 290, rand = rng(47);
+  const p = panel('d', W, H, { flip: true });
   const active = days.filter((d) => d.count > 0);
-  const { current, longest } = streaks(days);
   const max = Math.max(1, ...days.map((d) => d.count));
 
   const weeks = Math.max(...days.map((d) => d.week)) + 1;
   const pitch = Math.min(21, (W - 96) / weeks);
   const x0 = (W - weeks * pitch) / 2 + pitch / 2;
-  const y0 = 204;
+  const y0 = 98;
   const at = (d) => [x0 + d.week * pitch, y0 + d.weekday * pitch];
   const COLORS = [C.review, C.sky, C.lilac, '#ffffff'];
   const RADII = [2.8, 3.5, 4.2, 4.8];
@@ -180,11 +165,10 @@ export function deckSvg(days, L, today, lang) {
     .join('');
 
   const lx = W - 300;
-  const legend = COLORS.map((c, i) => `<circle cx="${lx + 62 + i * 22}" cy="${H - 34}" r="${RADII[i]}" fill="${c}"/>`).join('');
-  const colW = (W - 80) / 4;
+  const legend = COLORS.map((c, i) => `<circle cx="${lx + 62 + i * 22}" cy="${H - 30}" r="${RADII[i]}" fill="${c}"/>`).join('');
 
-  return `${svgOpen(W, H, `${total} contributions in the past year, drawn as a starfield that a small black hole sweeps through`)}
-  <defs>${p.defs}${glowFilter('glow', 2.4)}${numGrad}${blackHoleDefs()}
+  return `${svgOpen(W, H, L.alt)}
+  <defs>${p.defs}${glowFilter('glow', 2.4)}${blackHoleDefs()}
     <style>${FONT_CSS}
       @keyframes bh{${holeKeys}100%{transform:translate(${f(xR)}px,${f(yMid)}px)}}
       @keyframes diskSpin{to{stroke-dashoffset:-24}}
@@ -195,13 +179,7 @@ export function deckSvg(days, L, today, lang) {
   <g clip-path="url(#dClip)">
     ${p.bg}
     ${starfield(rand, { w: W, h: H, n: 60, maxR: 0.9, twinkle: 0.2 })}
-    ${[
-      [total, L.contributions, L.contributionsSub],
-      [active.length, L.bright, L.brightSub],
-      [current, L.current, L.currentSub(current)],
-      [longest, L.longest, L.longestSub],
-    ].map(([v, l, s], i) => `${i ? `<line x1="${f(40 + i * colW - 14)}" y1="34" x2="${f(40 + i * colW - 14)}" y2="114" stroke="${C.sky}" stroke-opacity=".12"/>` : ''}${stat(44 + i * colW, 74, v, l, s)}`).join('')}
-    <line x1="24" y1="140" x2="${W - 24}" y2="140" stroke="${C.sky}" stroke-opacity=".14"/>
+    <text x="40" y="44" class="mono" font-size="12.5" letter-spacing="3" fill="${C.label}">${esc(L.title)}</text>
     ${months}
     <g fill="${C.sky}" fill-opacity=".26">${dust}</g>
     <g stroke="${C.sky}" stroke-opacity=".28" stroke-width=".9">${chain}</g>
@@ -209,9 +187,9 @@ export function deckSvg(days, L, today, lang) {
     ${ghosts}
     <g style="animation:bh ${LOOP}s linear infinite">${blackHole()}</g>
     ${flashes}
-    <text x="40" y="${H - 30}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.deckNote)} · ${esc(L.synced)} ${today}</text>
-    <text x="${lx}" y="${H - 30}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.quiet)}</text>${legend}
-    <text x="${lx + 62 + 3 * 22 + 14}" y="${H - 30}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.brighter)}</text>
+    <text x="40" y="${H - 26}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.note)}</text>
+    <text x="${lx}" y="${H - 26}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.quiet)}</text>${legend}
+    <text x="${lx + 62 + 3 * 22 + 14}" y="${H - 26}" class="mono" font-size="11.5" fill="${C.textFaint}">${esc(L.bright)}</text>
   </g>
   ${p.border}
 </svg>`;

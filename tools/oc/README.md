@@ -1,7 +1,7 @@
 # OC sprite pipeline
 
-The walking OC in the merged-PR cards is drawn frame by frame. Frames live in `assets/oc/*.webp`
-(188×260, transparent; the character fills the card height) and are embedded into each card by `scripts/oc.mjs`.
+The stargazer on the hero is drawn frame by frame. The full-size frames live in `assets/oc/*.webp`
+(188×260, transparent); the hero embeds smaller copies from `assets/oc/hero/` (`scripts/hero.mjs`).
 
 To add or redraw an action:
 
@@ -15,6 +15,7 @@ To add or redraw an action:
    rise and fall smoothly: contact → down → passing → up)
 3. If a re-drawn batch drifts in colour, match it to the originals:
    `node tools/oc/colormatch.mjs frames/walk-{1..8}.png -- frames/new-{1..8}.png`
-4. Encode into the repo:
+4. Encode into the repo, full size and the hero's copy:
    `ffmpeg -i frames/x.png -vf scale=188:260:flags=lanczos -c:v libwebp -q:v 76 -pix_fmt yuva420p assets/oc/x.webp`
-5. Use the frame names in `SCRIPTS` inside `scripts/oc.mjs`, then run `node scripts/observatory.mjs`.
+   `ffmpeg -i assets/oc/x.webp -vf scale=108:150:flags=lanczos -c:v libwebp -q:v 76 -pix_fmt yuva420p assets/oc/hero/x.webp`
+5. Use the frame names in `ocTimeline()` inside `scripts/hero.mjs`, then run `node scripts/observatory.mjs`.

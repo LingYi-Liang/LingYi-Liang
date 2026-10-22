@@ -1,53 +1,31 @@
-// Live panels + both READMEs, refreshed daily by .github/workflows/observatory.yml.
-// Every pull request is its own image wrapped in a link, so each one is clickable on GitHub.
-//   assets/live/{en,zh}/  prs-summary, merged-head, merged-N, review-head, review-N, universe, deck
-//   README.md, README.zh-CN.md  (generated — edit scripts/content.mjs instead)
+// Builds the profile from live GitHub data, refreshed daily by .github/workflows/observatory.yml:
+//   assets/live/{en,zh}/hero.svg       role, name, umbrella line, organisations; sky, emblem, stargazer
+//   assets/live/{en,zh}/upstream.svg   merged work, one column per layer of the LLM stack
+//   assets/live/{en,zh}/review.svg     the few big projects with work still in review
+//   assets/live/{en,zh}/deck.svg       the past year of contributions as a starfield, swept by a black hole
+//   README.md, README.zh-CN.md         generated — edit scripts/content.mjs instead
+// Nothing is written unless every truth guard passes, so a failed run leaves yesterday's page in place.
 // Local run (no token needed, uses public data):  node scripts/observatory.mjs
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { LANGS, C, FONT_CSS, rng, esc, f, textWidth, fit, starfield, panel, svgOpen, clean } from './theme.mjs';
 import {
-  LANGS, C, FONT_CSS, rng, esc, f, textWidth, wrap, fit, starfield, panel, svgOpen, clean, numGrad, stat,
-} from './theme.mjs';
-import { LOGIN as DEFAULT_LOGIN, SITE, EMAIL, PROJECTS, HEADLINE, INTRO, SYNCED_MERGES, AI_DISCLOSURE, tr } from './content.mjs';
-import { universeSvg } from './universe.mjs';
+  LOGIN as DEFAULT_LOGIN, SITE, EMAIL, IDENTITY, COUNT_STYLE, BRANDS, PILLARS, LABELS, REVIEW, SYNCED_MERGES,
+  AI_DISCLOSURE, BANNED, tr,
+} from './content.mjs';
+import { heroSvg } from './hero.mjs';
 import { deckSvg } from './deck.mjs';
-import { ocJourney } from './oc.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const LOGIN = process.env.GH_LOGIN || DEFAULT_LOGIN;
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
-const MAX_MERGED = 8; // merged cards shown, four per row
-const MAX_REVIEW = 14; // in-review rows shown
-// Last known star counts, so one failed lookup never turns a project into ★ 0.
-const STARS_CACHE = join(ROOT, 'assets', 'live', 'stars.json');
-
 const HEADERS = {
-  'User-Agent': `${LOGIN}-observatory`,
+  'User-Agent': `${LOGIN}-profile`,
   Accept: 'application/vnd.github+json',
   ...(TOKEN && { Authorization: `Bearer ${TOKEN}` }),
 };
-
-const I18N = {
-  en: {
-    merged: 'MERGED', mergedSub: 'accepted upstream', projects: 'PROJECTS', projectsSub: 'with merged work',
-    mergedHead: 'MERGED UPSTREAM', badge: 'MERGED', clickHint: 'click any card or row to open the PR', hi: 'hi!', bye: 'bye~',
-    review: 'IN REVIEW', reviewNote: 'click to expand · sorted by project size', inReview: 'in review',
-    contributions: 'CONTRIBUTIONS', contributionsSub: 'in the past year', bright: 'BRIGHT NIGHTS', brightSub: 'days with activity',
-    current: 'CURRENT STREAK', currentSub: (n) => (n === 1 ? 'day' : 'days in a row'), longest: 'LONGEST STREAK', longestSub: 'days, past year',
-    deckNote: 'each point is a day · stars are days with contributions', quiet: 'quiet', brighter: 'bright',
-    synced: 'synced',
-  },
-  zh: {
-    merged: '已合并', mergedSub: '被上游接收', projects: '项目', projectsSub: '有代码被合并',
-    mergedHead: '已合并到上游', badge: '已合并', clickHint: '点击任意卡片或行可打开对应 PR', hi: '你好~', bye: '拜拜~',
-    review: '审核中', reviewNote: '点击展开 · 按项目规模排序', inReview: '审核中',
-    contributions: '贡献', contributionsSub: '过去一年', bright: '亮星之夜', brightSub: '有贡献的天数',
-    current: '当前连续', currentSub: () => '天', longest: '最长连续', longestSub: '天（过去一年）',
-    deckNote: '每个点是一天 · 亮星是有贡献的日子', quiet: '安静', brighter: '明亮',
-    synced: '同步于',
-  },
-};
+const MAX_ROWS = 4; // per column of the merged grid, including a "+N" row when a column overflows
 
 async function rest(path) {
   const r = await fetch('https://api.github.com' + path, { headers: HEADERS });
@@ -55,20 +33,25 @@ async function rest(path) {
   return r.json();
 }
 
+// Needs a token (the Action has one).
+async function graphql(query, variables) {
+  const r = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: { ...HEADERS, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  });
+  const j = await r.json();
+  if (!r.ok || j.errors) throw new Error('GraphQL: ' + JSON.stringify(j.errors || r.status));
+  return j.data;
+}
+
 // ───────────── data ─────────────
 
 async function calendar() {
   if (TOKEN) {
-    const query = `query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{
-      weeks{contributionDays{date contributionCount weekday}}}}}}`;
-    const r = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
-      headers: { ...HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, variables: { login: LOGIN } }),
-    });
-    const j = await r.json();
-    if (!r.ok || j.errors) throw new Error('GraphQL: ' + JSON.stringify(j.errors || r.status));
-    return j.data.user.contributionsCollection.contributionCalendar.weeks.flatMap((w, week) =>
+    const data = await graphql(`query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{
+      weeks{contributionDays{date contributionCount weekday}}}}}}`, { login: LOGIN });
+    return data.user.contributionsCollection.contributionCalendar.weeks.flatMap((w, week) =>
       w.contributionDays.map((d) => ({ date: d.date, count: d.contributionCount, weekday: d.weekday, week })),
     );
   }
@@ -86,403 +69,308 @@ async function calendar() {
   return days;
 }
 
-async function pullRequests() {
-  const items = [];
-  for (let page = 1; page <= 3; page++) {
-    const q = encodeURIComponent(`author:${LOGIN} type:pr`);
-    const j = await rest(`/search/issues?q=${q}&per_page=100&page=${page}&sort=created&order=desc`);
-    items.push(...j.items);
-    if (j.items.length < 100 || items.length >= j.total_count) break;
+// GitHub search sometimes times out and returns a partial page flagged incomplete_results: retry, and fail
+// rather than publish counts from partial data. The partial page stays cached for its URL, so each retry
+// asks with a different URL. Search serves at most 10 pages of 100, and since each page is a separate query
+// an item can repeat across pages, so items are keyed by URL.
+async function searchAll(q) {
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    const byUrl = new Map();
+    let incomplete = false, capped = true;
+    for (let page = 1; page <= 10; page++) {
+      const j = await rest(`/search/issues?q=${encodeURIComponent(q)}&per_page=100&page=${page}&sort=created&order=desc${attempt > 1 ? `&attempt=${attempt}` : ''}`);
+      incomplete ||= j.incomplete_results;
+      for (const i of j.items) byUrl.set(i.html_url, i);
+      if (j.items.length < 100) { capped = false; break; }
+    }
+    if (capped) throw new Error(`search "${q}" has more than 1000 results`);
+    if (!incomplete) return [...byUrl.values()];
+    await new Promise((r) => setTimeout(r, 4000 * attempt));
   }
-  // A PR in SYNCED_MERGES was merged through an upstream internal sync: GitHub shows it closed.
-  const synced = new Set(SYNCED_MERGES);
-  const prs = items
-    .map((i) => {
-      const viaSync = i.state === 'closed' && !i.pull_request?.merged_at && synced.has(i.html_url);
-      const merged = Boolean(i.pull_request?.merged_at) || viaSync;
-      return {
-        repo: i.repository_url.split('/repos/')[1],
-        title: i.title.trim(),
-        url: i.html_url,
-        state: merged ? 'merged' : i.state === 'open' ? 'open' : 'closed',
-        date: i.pull_request?.merged_at || (viaSync && i.closed_at) || i.created_at,
-        viaSync,
-      };
-    })
-    .filter((p) => p.state !== 'closed' && p.repo.split('/')[0].toLowerCase() !== LOGIN.toLowerCase());
-  let cached = {};
-  try {
-    cached = JSON.parse(readFileSync(STARS_CACHE, 'utf8'));
-  } catch {}
-  const stars = {};
-  await Promise.all(
-    [...new Set(prs.map((p) => p.repo))].map(async (repo) => {
-      stars[repo] = await rest(`/repos/${repo}`).then(
-        (r) => r.stargazers_count,
-        (e) => {
-          if (repo in cached) return cached[repo];
-          throw e;
-        },
-      );
-    }),
-  );
-  const bySize = (a, b) => (stars[b.repo] || 0) - (stars[a.repo] || 0) || b.date.localeCompare(a.date);
-  // Merged cards: the PRs featured in INTRO first (in their listed order), then the newest.
-  const featured = INTRO.tracks.flatMap((t) => t.prs.map((p) => p.url));
-  const rank = (p) => (featured.includes(p.url) ? featured.indexOf(p.url) : featured.length);
-  const byFeature = (a, b) => rank(a) - rank(b) || b.date.localeCompare(a.date);
+  throw new Error(`search "${q}" kept returning incomplete results`);
+}
+
+// The repositories of this account's merged and open pull requests. With a token, GraphQL lists them
+// directly (never partial); without one, two narrow searches (GitHub times out on broad ones far more often).
+async function pullRequestRepos() {
+  if (TOKEN) {
+    const prs = [];
+    let after = null;
+    do {
+      const { user } = await graphql(`query($login:String!,$after:String){user(login:$login){
+        pullRequests(first:100,after:$after,states:[MERGED,OPEN]){pageInfo{hasNextPage endCursor}nodes{state repository{nameWithOwner}}}}}`,
+      { login: LOGIN, after });
+      prs.push(...user.pullRequests.nodes);
+      after = user.pullRequests.pageInfo.hasNextPage ? user.pullRequests.pageInfo.endCursor : null;
+    } while (after);
+    const of = (state) => prs.filter((p) => p.state === state).map((p) => p.repository.nameWithOwner);
+    return { merged: of('MERGED'), open: of('OPEN') };
+  }
+  const repoOf = (i) => i.repository_url.split('/repos/')[1];
   return {
-    prs,
-    stars,
-    merged: prs.filter((p) => p.state === 'merged').sort(byFeature),
-    open: prs.filter((p) => p.state === 'open').sort(bySize),
-    repos: [...new Set(prs.map((p) => p.repo))].sort((a, b) => (stars[b] || 0) - (stars[a] || 0)),
+    merged: (await searchAll(`author:${LOGIN} type:pr is:merged`)).map(repoOf),
+    open: (await searchAll(`author:${LOGIN} type:pr is:open`)).map(repoOf),
   };
 }
 
+async function pullRequests() {
+  const upstream = (repo) => repo.split('/')[0].toLowerCase() !== LOGIN.toLowerCase();
+  const prs = await pullRequestRepos();
+  const merged = prs.merged.filter(upstream), open = prs.open.filter(upstream);
+
+  // Synced merges are closed on GitHub, so neither source lists them as merged; their repository counts as
+  // merged only while its commit log still credits this account.
+  const credited = new Set();
+  for (const repo of new Set(SYNCED_MERGES.map((u) => u.split('/').slice(3, 5).join('/'))))
+    if ((await rest(`/repos/${repo}/commits?author=${LOGIN}&per_page=1`)).length) credited.add(repo);
+
+  return { nativeMerged: merged.length, mergedRepos: new Set([...merged, ...credited]), openRepos: new Set(open), credited };
+}
+
 // Organisation logos = their GitHub avatars, kept in assets/orgs so each is downloaded only once.
-async function orgAvatars(owners) {
+async function avatars(owners) {
   const dir = join(ROOT, 'assets', 'orgs');
   mkdirSync(dir, { recursive: true });
   const out = {};
-  await Promise.all(owners.map(async (owner) => {
+  for (const owner of owners) {
     const file = join(dir, `${owner}.png`);
     if (!existsSync(file)) {
       const r = await fetch(`https://github.com/${owner}.png?size=96`, { headers: { 'User-Agent': HEADERS['User-Agent'] } });
-      if (!r.ok) return; // no logo: the card falls back to a monogram
+      if (!r.ok) continue;
       writeFileSync(file, Buffer.from(await r.arrayBuffer()));
     }
     const buf = readFileSync(file);
-    const mime = buf[0] === 0xff && buf[1] === 0xd8 ? 'image/jpeg' : buf[0] === 0x47 ? 'image/gif' : 'image/png';
+    const mime = buf[0] === 0xff && buf[1] === 0xd8 ? 'image/jpeg' : 'image/png';
     out[owner] = `data:${mime};base64,` + buf.toString('base64');
-  }));
+  }
   return out;
 }
 
-// Rounded logo tile; falls back to a monogram when there is no avatar.
-function logo(avatar, x, y, size, fallback) {
-  const r = size * 0.28;
-  return avatar
-    ? `<rect x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" rx="${f(r)}" fill="#fff"/>
-      <image href="${avatar}" x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
-      <rect x="${f(x + 0.5)}" y="${f(y + 0.5)}" width="${size - 1}" height="${size - 1}" rx="${f(r)}" fill="none" stroke="#fff" stroke-opacity=".35"/>`
-    : `<rect x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" rx="${f(r)}" fill="url(#mono)"/>
-      <text x="${f(x + size / 2)}" y="${f(y + size * 0.64)}" text-anchor="middle" class="sans" font-size="${f(size * 0.38)}" font-weight="700" fill="#fff">${esc(fallback)}</text>`;
-}
-const logoClipDef = `<clipPath id="logoClip" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".28"/></clipPath>
-  <linearGradient id="mono" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.azure}"/><stop offset="1" stop-color="${C.violet}"/></linearGradient>`;
+// ───────────── derived facts ─────────────
 
-// ───────────── drawing helpers ─────────────
+const search = (q) => `https://github.com/search?q=${encodeURIComponent(`author:${LOGIN} type:pr ${q}`.trim())}&type=pullrequests`;
+const MERGED_SEARCH = search('is:merged');
+const OPEN_SEARCH = search('is:open');
 
-const kfmt = (n) => (n >= 1000 ? (n >= 9950 ? Math.round(n / 1000) : (n / 1000).toFixed(1)) + 'k' : String(n));
-
-// "fix(tui): isolate callbacks" -> { tag: "fix · tui", text: "Isolate callbacks" }
-function parseTitle(t) {
-  let m = t.match(/^\[([^\]]+)\]\s*(.+)$/);
-  let tag = '', text = t;
-  if (m) (tag = m[1]), (text = m[2]);
-  else if ((m = t.match(/^(\w+)(?:\(([^)]+)\))?!?:\s*(.+)$/))) (tag = m[2] ? `${m[1]} · ${m[2]}` : m[1]), (text = m[3]);
-  return { tag: tag.toLowerCase(), text: text.charAt(0).toUpperCase() + text.slice(1) };
+// "20+" / "20 余个" only when the true count is above the round number; otherwise the exact count.
+function countText(n, lang) {
+  if (COUNT_STYLE === 'exact' || n < 10 || n % 10 === 0) return lang === 'zh' ? `${n} 个` : String(n);
+  const r = Math.floor(n / 10) * 10;
+  return lang === 'zh' ? `${r} 余个` : `${r}+`;
 }
 
-function monogram(name) {
-  const parts = name.split(/[-_.]|(?<=[a-z])(?=[A-Z])/).filter(Boolean);
-  return (parts.length > 1 ? parts[0][0] + parts[1][0] : name.slice(0, 2)).toUpperCase();
+function facts(d) {
+  const brands = BRANDS.map((b) => {
+    const repos = [...d.mergedRepos].filter((r) => b.owners.includes(r.split('/')[0]));
+    if (!repos.length) return null;
+    const link = b.proof?.commits && d.credited.has(b.proof.commits)
+      ? `https://github.com/${b.proof.commits}/commits/main?author=${LOGIN}`
+      : search(`is:merged ${repos.map((r) => `repo:${r}`).join(' ')}`);
+    return { ...b, repos, link };
+  }).filter(Boolean);
+  const branded = new Set(brands.flatMap((b) => b.repos));
+  const others = [...d.mergedRepos].some((r) => !branded.has(r));
+  const pillars = PILLARS.map((p) => ({ ...p, rows: p.repos.filter((r) => d.mergedRepos.has(r)) })).filter((p) => p.rows.length);
+  const inGrid = new Set(pillars.flatMap((p) => p.rows));
+  const review = REVIEW.show ? REVIEW.lead.filter((l) => d.openRepos.has(l.repo) && !inGrid.has(l.repo)) : [];
+  return { ...d, brands, others, pillars, review };
 }
 
-// ───────────── panels ─────────────
+// ───────────── panels (dark plates in the hero's visual language) ─────────────
 
-// Left: merged PRs and the projects they went into. Right: the headline, those projects
-// (merged work only, most merged first, with the count on each logo), and what I work on.
-function summarySvg(data, L, lang, avatars) {
-  const { merged, stars } = data;
-  const W = 1200, H = 270, rand = rng(31);
-  const T = (v) => tr(v, lang);
-  const p = panel('m', W, H, { seed: 21 });
+const logoDefs = `<clipPath id="round" clipPathUnits="objectBoundingBox"><rect width="1" height="1" rx=".24"/></clipPath>
+  <linearGradient id="num" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="${C.sky}"/></linearGradient>`;
 
-  const counts = {};
-  for (const pr of merged) counts[pr.repo] = (counts[pr.repo] || 0) + 1;
-  const projects = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || (stars[b] || 0) - (stars[a] || 0));
-  const nameOf = (repo) => PROJECTS[repo] || repo.split('/')[1];
-  const x0 = 384, span = 1160 - x0, slot = Math.min(84, span / Math.max(1, projects.length));
-  const logos = projects.map((repo, i) => {
-    const owner = repo.split('/')[0], n = String(counts[repo]);
-    const big = counts[repo] >= 3, size = big ? 48 : 40, cx = x0 + slot * (i + 0.5), top = big ? 124 : 128;
-    const bx = cx + size / 2 - 3, by = top + 3, bw = 12 + textWidth(n, 11, true);
-    return `${big ? `<circle cx="${f(cx)}" cy="${top + size / 2}" r="${size * 0.8}" fill="url(#halo)"/>` : ''}
-      ${logo(avatars[owner], cx - size / 2, top, size, monogram(repo.split('/')[1]))}
-      <rect x="${f(bx - bw / 2)}" y="${by - 9}" width="${f(bw)}" height="18" rx="9" fill="${C.violet}" stroke="#fff" stroke-opacity=".55"/>
-      <text x="${f(bx)}" y="${by + 4}" text-anchor="middle" class="mono" font-size="11" font-weight="600" fill="#fff">${esc(n)}</text>
-      <text x="${f(cx)}" y="196" text-anchor="middle" class="sans" font-size="12.5" font-weight="${big ? 600 : 400}" fill="${big ? '#fff' : C.textDim}">${esc(fit(nameOf(repo), slot - 6, 12.5))}</text>`;
+// An organisation's logo (its GitHub avatar) as a rounded tile; a quiet monogram when there is none.
+function logo(src, x, y, size, fallback) {
+  const r = f(size * 0.24);
+  if (!src) return `<rect x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" rx="${r}" fill="${C.sky}" fill-opacity=".12" stroke="${C.sky}" stroke-opacity=".3"/>
+    <text x="${f(x + size / 2)}" y="${f(y + size * 0.64)}" text-anchor="middle" class="sans" font-size="${f(size * 0.4)}" font-weight="700" fill="${C.text}">${esc(fallback)}</text>`;
+  return `<rect x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" rx="${r}" fill="#fff"/>
+    <image href="${src}" x="${f(x)}" y="${f(y)}" width="${size}" height="${size}" clip-path="url(#round)" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="${f(x + 0.5)}" y="${f(y + 0.5)}" width="${size - 1}" height="${size - 1}" rx="${r}" fill="none" stroke="#fff" stroke-opacity=".3"/>`;
+}
+
+function upstreamSvg(F, lang, logos, { alt, count }) {
+  const zh = lang === 'zh';
+  const W = 1200, n = F.pillars.length;
+  const rows = Math.min(MAX_ROWS, Math.max(...F.pillars.map((p) => p.rows.length)));
+  const top = 148, rowH = 44;
+  const H = top + rowH * rows + 12;
+  const p = panel('u', W, H);
+  const colW = (W - 80) / n;
+  const cols = F.pillars.map((pl, i) => {
+    const x0 = 40 + i * colW, x = x0 + (i ? 28 : 4), inner = colW - (i ? 56 : 32);
+    const overflow = pl.rows.length > MAX_ROWS;
+    const shown = pl.rows.slice(0, overflow ? MAX_ROWS - 1 : MAX_ROWS);
+    const list = shown.map((repo, j) => {
+      const y = top + j * rowH;
+      const [name, org] = LABELS[repo] || [repo.split('/')[1], repo.split('/')[0]];
+      const nameW = textWidth(name, 18) * 1.04;
+      return `${logo(logos[repo.split('/')[0]], x, y, 32, name.slice(0, 2))}
+        <text x="${f(x + 44)}" y="${y + 22}" class="sans"><tspan font-size="18" font-weight="600" fill="#fff">${esc(name)}</tspan><tspan font-size="16" fill="${C.textDim}"> · ${esc(fit(tr(org, lang), inner - 44 - nameW - 14, 16))}</tspan></text>`;
+    }).join('');
+    const more = overflow ? `<text x="${f(x + 44)}" y="${top + shown.length * rowH + 22}" class="sans" font-size="16" fill="${C.textDim}">+${pl.rows.length - shown.length}</text>` : '';
+    return `${i ? `<rect x="${f(x0)}" y="100" width="1" height="${H - 124}" fill="${C.sky}" fill-opacity=".14"/>` : ''}
+      <text x="${f(x)}" y="114" class="sans" font-size="21" font-weight="600" fill="${C.text}">${esc(fit(tr(pl.title, lang), inner, 21))}</text>
+      <text x="${f(x)}" y="134" class="sans" font-size="15" fill="#8FB0DA">${esc(fit(tr(pl.desc, lang), inner, 15))}</text>
+      ${list}${more}`;
   }).join('');
-  let cx = x0;
-  const chips = HEADLINE.directions.map((d) => {
-    const t = T(d), w = 22 + textWidth(t, 13);
-    const out = `<rect x="${f(cx)}" y="216" width="${f(w)}" height="28" rx="14" fill="${C.sky}" fill-opacity=".08" stroke="${C.sky}" stroke-opacity=".3"/>
-      <text x="${f(cx + w / 2)}" y="234.5" text-anchor="middle" class="sans" font-size="13" fill="${C.textDim}">${esc(t)}</text>`;
-    cx += w + 10;
-    return out;
-  }).join('');
-
-  return `${svgOpen(W, H, `${T(HEADLINE.title)} — ${merged.length} merged pull requests in ${projects.length} projects: ${projects.map(nameOf).join(', ')}`)}
-  <defs>${p.defs}${numGrad}${logoClipDef}
-    <radialGradient id="halo"><stop offset="0" stop-color="${C.violet}" stop-opacity=".45"/><stop offset="1" stop-color="${C.violet}" stop-opacity="0"/></radialGradient>
-    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="${C.haze}"/><stop offset="1" stop-color="${C.lilac}"/></linearGradient>
-    <style>${FONT_CSS}</style>
-  </defs>
-  <g clip-path="url(#mClip)">
+  const rand = rng(17);
+  // Chinese labels use the sans face: next to CJK, a monospace space reads as a gap.
+  const label = zh ? '个已合并的 PR' : 'MERGED PULL REQUESTS', labelSize = zh ? 13 : 11.5;
+  const labelW = textWidth(label, labelSize, !zh) + (zh ? 1 : 2) * [...label].length;
+  return `${svgOpen(W, H, alt)}
+  <defs>${p.defs}${logoDefs}<style>${FONT_CSS}</style></defs>
+  <g clip-path="url(#uClip)">
     ${p.bg}
-    ${starfield(rand, { w: W, h: H, n: 70, maxR: 1, twinkle: 0.25 })}
-    ${stat(44, 98, merged.length, L.merged, L.mergedSub, 'numM')}
-    <line x1="44" y1="150" x2="300" y2="150" stroke="${C.sky}" stroke-opacity=".12"/>
-    ${stat(44, 204, projects.length, L.projects, L.projectsSub)}
-    <line x1="340" y1="40" x2="340" y2="236" stroke="${C.sky}" stroke-opacity=".14"/>
-    <text x="${x0}" y="80" class="${lang === 'zh' ? 'sans' : 'serif'}" font-size="38" font-weight="${lang === 'zh' ? 600 : 400}" fill="url(#title)">${esc(T(HEADLINE.title))}</text>
-    <text x="${x0}" y="108" class="mono" font-size="11.5" letter-spacing="3" fill="${C.label}">${esc(T(HEADLINE.kicker))}</text>
-    ${logos}
-    ${chips}
+    ${starfield(rand, { w: W, h: H, n: 46, maxR: 0.9, twinkle: 0.25 })}
+    <text x="44" y="48" class="mono" font-size="12.5" letter-spacing="3" fill="${C.label}">${zh ? '横跨技术栈' : 'ACROSS THE STACK'}</text>
+    <text x="${f(1156 - labelW - 12)}" y="52" text-anchor="end" class="serif" font-size="38" fill="url(#num)">${esc(count)}</text>
+    <text x="1156" y="50" text-anchor="end" class="${zh ? 'sans' : 'mono'}" font-size="${labelSize}" letter-spacing="${zh ? 1 : 2}" fill="${C.label}">${label}</text>
+    <rect x="44" y="72" width="1112" height="1" fill="${C.sky}" fill-opacity=".14"/>
+    ${cols}
   </g>
   ${p.border}
 </svg>`;
 }
 
-// Transparent sub-header strip, readable on both GitHub themes.
-function headSvg(kind, count, L, today) {
-  const W = 1200, H = 46;
-  const merged = kind === 'merged';
-  const label = `${merged ? '◆' : '○'}  ${merged ? L.mergedHead : L.review} · ${count}`;
-  const note = merged ? L.clickHint : `${L.reviewNote} · ${L.synced} ${today}`;
-  const lw = textWidth(label, 13, true) + 3 * [...label].length;
-  const nw = textWidth(note, 11.5, true);
-  const tone = merged ? C.violet : C.cerulean;
-  return `${svgOpen(W, H, label)}
-  <defs><linearGradient id="h" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${tone}" stop-opacity=".6"/><stop offset="1" stop-color="${tone}" stop-opacity=".05"/></linearGradient><style>${FONT_CSS}</style></defs>
-  <text x="8" y="28" class="mono" font-size="13" letter-spacing="3" fill="${merged ? '#8a6ee8' : C.mid}">${esc(label)}</text>
-  <rect x="${f(24 + lw)}" y="23" width="${f(Math.max(0, 1192 - nw - 24 - lw - 16))}" height="1" fill="url(#h)"/>
-  <text x="1192" y="28" text-anchor="end" class="mono" font-size="11.5" fill="${C.mid}" opacity=".85">${esc(note)}</text>
-</svg>`;
-}
-
-// One merged PR as a raised slab. The OC walks across it beneath the text layer, so the text sits on top of her.
-// Transparent around the card so it floats on the page.
-const CARD_W = 262, CARD_H = 216, CARD_X = 8, CARD_Y = 6, GROUND = CARD_Y + 212;
-function mergedCardSvg(pr, stars, L, i, oc, avatar) {
-  const W = CARD_W + 30, H = CARD_H + 34, cw = CARD_W, ch = CARD_H, x = CARD_X, y = CARD_Y;
-  const [owner, name] = pr.repo.split('/');
-  const { tag, text } = parseTitle(pr.title);
-  const lines = wrap(text, cw - 40, 18, 3);
-  const tagW = tag ? 18 + textWidth(tag, 12.5, true) : 0;
-  const rand = rng(100 + i);
-  return `${svgOpen(W, H, `Merged: ${pr.repo} — ${pr.title}`)}
-  <defs>
-    <filter id="blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
-    <filter id="lift" x="-10%" y="-30%" width="120%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation="1.4" flood-color="#0a1440" flood-opacity=".95"/></filter>
-    <linearGradient id="face" x1="0" y1="0" x2=".4" y2="1"><stop offset="0" stop-color="#2a3f9e"/><stop offset=".55" stop-color="#22307f"/><stop offset="1" stop-color="#2c1f72"/></linearGradient>
-    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="${C.lilac}" stop-opacity=".35"/></linearGradient>
-    ${logoClipDef}
-    <clipPath id="faceClip"><rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="16"/></clipPath>
-    ${oc.defs}
-    <style>${FONT_CSS}@keyframes sheen{0%,70%{transform:translateX(-340px)}100%{transform:translateX(340px)}}${oc.css}</style>
-  </defs>
-  <rect x="${x + 9}" y="${y + 13}" width="${cw}" height="${ch}" rx="16" fill="#020718" opacity=".5" filter="url(#blur)"/>
-  <rect x="${x + 7}" y="${y + 8}" width="${cw}" height="${ch}" rx="16" fill="#140f3c"/>
-  <rect x="${x + 3.5}" y="${y + 4}" width="${cw}" height="${ch}" rx="16" fill="#261b66"/>
-  <rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="16" fill="url(#face)"/>
-  <g clip-path="url(#faceClip)">
-    ${starfield(rand, { x, y, w: cw, h: ch, n: 18, maxR: 0.9, twinkle: 0.3 })}
-    <rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="url(#gloss)"/>
-    <rect x="${x}" y="${y - 40}" width="60" height="${ch + 80}" fill="#fff" opacity=".07" transform="skewX(-20)" style="animation:sheen ${f(7 + i * 0.9)}s ease-in-out infinite"/>
-    <g transform="translate(${x} 0)">${oc.body}</g>
+function reviewSvg(F, lang, logos, alt) {
+  const W = 1200, H = 92;
+  const p = panel('r', W, H);
+  const label = lang === 'zh' ? '审核中' : 'IN REVIEW';
+  const x0 = 44 + textWidth(label, 12.5, true) + 3 * [...label].length + 36;
+  const cells = F.review.map((l, i) => {
+    const x = x0 + i * 190;
+    return `${logo(logos[l.repo.split('/')[0]], x, 28, 36, l.name.slice(0, 2))}
+      <text x="${x + 48}" y="52" class="sans" font-size="19" font-weight="600" fill="#fff">${esc(l.name)}</text>`;
+  }).join('');
+  return `${svgOpen(W, H, alt)}
+  <defs>${p.defs}${logoDefs}<style>${FONT_CSS}</style></defs>
+  <g clip-path="url(#rClip)">
+    ${p.bg}
+    <text x="44" y="51" class="mono" font-size="12.5" letter-spacing="3" fill="${C.label}">${label}</text>
+    ${cells}
   </g>
-  <rect x="${x + 0.75}" y="${y + 0.75}" width="${cw - 1.5}" height="${ch - 1.5}" rx="15.5" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-  <g filter="url(#lift)">
-    ${logo(avatar, x + 18, y + 18, 42, monogram(name))}
-    <text x="${x + 72}" y="${y + 34}" class="mono" font-size="12.5" fill="${C.textDim}">${esc(fit(owner, cw - 90, 12.5, true))}</text>
-    <text x="${x + 72}" y="${y + 55}" class="sans" font-size="18" font-weight="600" fill="#fff">${esc(fit(name, cw - 90, 18))}</text>
-    ${tag ? `<rect x="${x + 18}" y="${y + 74}" width="${f(tagW)}" height="24" rx="12" fill="#1c2466" fill-opacity=".55" stroke="${C.lilac}" stroke-opacity=".45"/>
-      <text x="${f(x + 18 + tagW / 2)}" y="${y + 90.5}" text-anchor="middle" class="mono" font-size="12.5" fill="${C.lilac}">${esc(tag)}</text>` : ''}
-    ${lines.map((l, j) => `<text x="${x + 18}" y="${y + 124 + j * 22}" class="sans" font-size="18" fill="${C.text}">${esc(l)}</text>`).join('')}
-    <line x1="${x + 18}" y1="${y + 182}" x2="${x + cw - 18}" y2="${y + 182}" stroke="#fff" stroke-opacity=".12"/>
-    <path d="M${x + 19} ${y + 199}l4 4l8 -8.5" fill="none" stroke="${C.lilac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <text x="${x + 38}" y="${y + 204}" class="mono" font-size="12.5" letter-spacing="1.8" fill="${C.lilac}">${esc(L.badge)}</text>
-    <text x="${x + cw - 18}" y="${y + 204}" text-anchor="end" class="mono" font-size="13" fill="${C.textDim}">★ ${kfmt(stars[pr.repo] || 0)}</text>
-  </g>
-</svg>`;
-}
-
-// One in-review PR as a raised strip.
-function reviewRowSvg(pr, stars, L, i, avatar) {
-  const W = 1200, H = 58, y = 4, h = 46;
-  const [owner, name] = pr.repo.split('/');
-  const { tag, text } = parseTitle(pr.title);
-  const tagW = tag ? 18 + textWidth(tag, 12, true) : 0;
-  const tx = 370 + (tag ? tagW + 12 : 0);
-  const statusW = 24 + textWidth(L.inReview, 12.5, true);
-  const rand = rng(200 + i);
-  return `${svgOpen(W, H, `In review: ${pr.repo} — ${pr.title}`)}
-  <defs>
-    <linearGradient id="strip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#11296a"/><stop offset=".6" stop-color="#0d2058"/><stop offset="1" stop-color="#1a1d62"/></linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".05"/></linearGradient>
-    <clipPath id="sc"><rect x="2" y="${y}" width="${W - 4}" height="${h}" rx="13"/></clipPath>
-    ${logoClipDef}
-    <style>${FONT_CSS}</style>
-  </defs>
-  <rect x="2" y="${y + 4}" width="${W - 4}" height="${h}" rx="13" fill="#020718" opacity=".5"/>
-  <rect x="2" y="${y}" width="${W - 4}" height="${h}" rx="13" fill="url(#strip)"/>
-  <g clip-path="url(#sc)">${starfield(rand, { x: 2, y, w: W - 4, h, n: 14, maxR: 0.8, twinkle: 0.4 })}</g>
-  <rect x="2.75" y="${y + 0.75}" width="${W - 5.5}" height="${h - 1.5}" rx="12.5" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-  ${logo(avatar, 16, y + 8, 30, monogram(name))}
-  <text x="58" y="${y + 29}" class="mono" font-size="15"><tspan fill="${C.textFaint}">${esc(fit(owner, 130, 15, true))}/</tspan><tspan fill="#fff">${esc(fit(name, 170, 15, true))}</tspan></text>
-  ${tag ? `<rect x="370" y="${y + 11}" width="${f(tagW)}" height="24" rx="12" fill="#fff" fill-opacity=".06" stroke="${C.review}" stroke-opacity=".4"/>
-    <text x="${f(370 + tagW / 2)}" y="${y + 27.5}" text-anchor="middle" class="mono" font-size="12" fill="${C.sky}">${esc(tag)}</text>` : ''}
-  <text x="${f(tx)}" y="${y + 29}" class="sans" font-size="17" fill="${C.text}">${esc(fit(text, 1176 - statusW - 16 - 78 - tx, 17))}</text>
-  <text x="${f(1176 - statusW - 16)}" y="${y + 29}" text-anchor="end" class="mono" font-size="13.5" fill="${C.textDim}">★ ${kfmt(stars[pr.repo] || 0)}</text>
-  <rect x="${f(1176 - statusW)}" y="${y + 10}" width="${f(statusW)}" height="26" rx="13" fill="${C.review}" fill-opacity=".14" stroke="${C.review}" stroke-opacity=".5"/>
-  <text x="${f(1176 - statusW / 2)}" y="${y + 27.5}" text-anchor="middle" class="mono" font-size="12.5" fill="${C.sky}">${esc(L.inReview)}</text>
+  ${p.border}
 </svg>`;
 }
 
 // ───────────── README ─────────────
 
-const README_TEXT = {
-  en: {
-    file: 'README.md', alt: 'English', otherAlt: '切换到中文',
-    header: 'LingYi — LLM reasoning & efficient learning · mathematics researcher',
-    site: 'site', mail: 'mail', summaryAlt: 'Merged pull requests and the projects they went into',
-    count: (n, m) => `${n} pull requests merged into ${m} projects`, all: 'see them all',
-    syncNote: 'Google ADK merges outside pull requests through an internal sync, so GitHub lists those as closed.',
-    reviewAlt: 'Pull requests in review (click to expand)',
-    universeAlt: 'Orbit I mathematics, orbit II my projects, orbit III the projects my pull requests went to',
-    deckAlt: 'The past year of contributions as a starfield, swept by a small black hole',
-    footer: 'Until the next observation.',
-  },
-  zh: {
-    file: 'README.zh-CN.md', alt: '中文', otherAlt: 'Switch to English',
-    header: 'LingYi — LLM 推理与高效学习 · 数学研究者',
-    site: '个人主页', mail: '邮箱', summaryAlt: '已合并的 PR 和对应的上游项目',
-    count: (n, m) => `已合并 ${n} 个 PR，涉及 ${m} 个项目`, all: '查看全部',
-    syncNote: 'Google ADK 通过内部同步合入外部 PR，所以 GitHub 上这几个显示为“已关闭”。',
-    reviewAlt: '审核中的 PR（点击展开）',
-    universeAlt: '轨道 I 数学，轨道 II 我的项目，轨道 III 我提交 PR 的上游项目',
-    deckAlt: '过去一年的贡献画成星空，一个小黑洞正在扫过',
-    footer: '下次观测再见。',
-  },
+function list(items, lang) {
+  if (lang === 'zh') return items.join('、');
+  if (items.length < 2) return items.join('');
+  return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+}
+
+const DECK_TEXT = {
+  en: { title: 'CONTRIBUTIONS · PAST YEAR', note: 'each point is a day · stars are days with contributions', quiet: 'quiet', bright: 'bright', alt: 'The past year of contributions as a starfield, swept by a small black hole.' },
+  zh: { title: '过去一年的贡献', note: '每个点是一天 · 亮星是有贡献的日子', quiet: '安静', bright: '明亮', alt: '过去一年的贡献画成星空，一个小黑洞正在扫过。' },
 };
 
-function readme(lang, data) {
-  const R = README_TEXT[lang];
-  const A = `assets/${lang}`, LIVE = `assets/live/${lang}`;
-  const profile = `https://github.com/${LOGIN}`;
-  const zhUrl = `https://github.com/${LOGIN}/${LOGIN}/blob/main/README.zh-CN.md`;
-  const search = (extra) => `https://github.com/search?q=${encodeURIComponent(`author:${LOGIN} type:pr ${extra}`.trim())}&type=pullrequests`;
-  const badge = (label, value, color, href) =>
-    `<a href="${href}"><img src="https://img.shields.io/badge/${encodeURIComponent(label)}-${encodeURIComponent(value.replace(/-/g, '--'))}-${color}?style=flat-square&labelColor=0a1f52" alt="${label}"></a>`;
-  const sw = lang === 'en'
-    ? `<a href="${profile}"><img src="assets/lang/en-on.svg" height="28" alt="${R.alt}"></a><a href="${zhUrl}"><img src="assets/lang/zh-off.svg" height="28" alt="${R.otherAlt}"></a>`
-    : `<a href="${profile}"><img src="assets/lang/en-off.svg" height="28" alt="${R.otherAlt}"></a><a href="${zhUrl}"><img src="assets/lang/zh-on.svg" height="28" alt="${R.alt}"></a>`;
-
-  const merged = data.merged.slice(0, MAX_MERGED);
-  const mergedRows = [];
-  for (let i = 0; i < merged.length; i += 4)
-    mergedRows.push(`<p align="center">\n${merged.slice(i, i + 4).map((pr, j) =>
-      `  <a href="${pr.url}"><img src="${LIVE}/merged-${i + j + 1}.svg" width="24%" alt="${esc(pr.repo)}: ${esc(pr.title)}"></a>`).join('\n')}\n</p>`);
-  const review = data.open.slice(0, MAX_REVIEW).map((pr, i) =>
-    `  <a href="${pr.url}"><img src="${LIVE}/review-${i + 1}.svg" width="100%" alt="${esc(pr.repo)}: ${esc(pr.title)}"></a>`);
-
-  // Plain-text introduction. A featured PR is listed only once it is actually merged.
+function readme(F, lang) {
+  const zh = lang === 'zh';
   const T = (v) => tr(v, lang);
-  const mergedUrls = new Set(data.merged.map((pr) => pr.url));
-  const ref = (url) => url.replace(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/pull\/(\d+)$/, '$1#$2');
-  const sep = lang === 'zh' ? '：' : ': ';
-  const tracks = INTRO.tracks.map((t) => [
-    `- **${T(t.title)}**${sep}${T(t.note)}`,
-    ...t.prs.filter((pr) => mergedUrls.has(pr.url)).map((pr) => `  - [${ref(pr.url)}](${pr.url}) ${T(pr)}`),
-  ].join('\n'));
-  const projectCount = new Set(data.merged.map((pr) => pr.repo)).size;
-  const synced = data.merged.some((pr) => pr.viaSync);
-  const intro = [
-    `**${INTRO.name}** · ${T(INTRO.lead)}`,
-    '',
-    ...tracks,
-    `- **${T(INTRO.math.title)}**${sep}[${T(INTRO.math.text)}](${INTRO.math.url})`,
-    '',
-    `**${R.count(data.merged.length, projectCount)}** · [${R.all}](${search('is:merged')})${synced ? `<br><sub>${R.syncNote}</sub>` : ''}`,
-  ].join('\n');
+  const LIVE = `assets/live/${lang}`;
+  const count = countText(F.nativeMerged, lang);
+  const brandNames = F.brands.map((b) => T(b));
+  const heroAlt = zh
+    ? `${IDENTITY.name} —— ${T(IDENTITY.role)}。${T(IDENTITY.line)}。代码已合并进 ${list(brandNames, lang)}的开源项目。`
+    : `${IDENTITY.name} — ${T(IDENTITY.role)}. ${T(IDENTITY.line)}. Code merged into open-source projects from ${list(brandNames, lang)}.`;
+  const brandLinks = F.brands.map((b) => `[${T(b)}](${b.link})`);
+  const focus = T(IDENTITY.focus).join(' · ');
+  const stack = IDENTITY.languages.join(' · ');
+  const leanLink = `[${zh ? '机器验证数学' : 'machine-checked mathematics'}](${IDENTITY.lean.url})`;
+  const countLink = `[${zh ? `${count} PR` : `${count} pull requests`}](${MERGED_SEARCH})`;
+  const merged = zh
+    ? `${countLink}，涉及 ${list(brandLinks, lang)}${F.others ? '等' : ''}的开源项目`
+    : `${countLink} in open-source projects from ${F.others ? `${brandLinks.join(', ')} and others` : list(brandLinks, lang)}`;
+  const lines = zh
+    ? [`**方向** · ${focus}`, `**技术栈** · ${stack} · Lean 4（${leanLink}）`, `**已合并进上游** · ${merged}`]
+    : [`**Focus** · ${focus}`, `**Stack** · ${stack} · Lean 4 (${leanLink})`, `**Merged upstream** · ${merged}`];
+  const gridAlt = (zh ? '已合并进上游。' : 'Merged upstream. ') + F.pillars.map((p) =>
+    `${T(p.title)}${zh ? '：' : ': '}${p.rows.map((r) => { const [n, o] = LABELS[r] || [r]; return o ? `${n}${zh ? `（${T(o)}）` : ` (${T(o)})`}` : n; }).join(zh ? '、' : ', ')}`).join(zh ? '；' : '. ') + (zh ? '。' : '.');
+  const reviewNames = F.review.map((l) => l.name);
+  const reviewLine = zh ? `审核中：${list(reviewNames, lang)}` : `In review at ${list(reviewNames, lang)}`;
+  const switcher = zh
+    ? `<p align="left"><sub><a href="https://github.com/${LOGIN}">EN</a> · <b>中文</b></sub></p>`
+    : `<p align="left"><sub><b>EN</b> · <a href="https://github.com/${LOGIN}/${LOGIN}/blob/main/README.zh-CN.md">中文</a></sub></p>`;
 
-  return `<!-- Generated by scripts/observatory.mjs — edit scripts/content.mjs, not this file. -->
-<p align="left">${sw}</p>
+  return {
+    text: `<!-- Generated by scripts/observatory.mjs from live GitHub data. Edit scripts/content.mjs, not this file. -->
+${switcher}
 
-<p align="center">
-  <img src="${A}/header.svg" width="100%" alt="${R.header}">
-</p>
+<p><img src="${LIVE}/hero.svg" width="100%" alt="${esc(heroAlt)}"></p>
 
-<p align="center">
-  ${badge(R.site, SITE.replace('https://', ''), '2a7fd4', SITE)}
-  ${badge(R.mail, EMAIL, '7c5cff', `mailto:${EMAIL}`)}
-</p>
+${lines.join('<br>\n')}
 
-${intro}
+<sub><b>${esc(T(IDENTITY.status))}</b> · <a href="${SITE}">${SITE.replace('https://', '')}</a> · <a href="mailto:${EMAIL}">${EMAIL}</a></sub>
 
-<p align="center"><img src="${A}/dividers/prs.svg" width="100%" alt=""></p>
-<p align="center">
-  <a href="${search('')}"><img src="${LIVE}/prs-summary.svg" width="100%" alt="${R.summaryAlt}"></a>
-</p>
-<p align="center"><a href="${search('is:merged')}"><img src="${LIVE}/merged-head.svg" width="100%" alt=""></a></p>
-${mergedRows.join('\n')}
+<p><img src="${LIVE}/upstream.svg" width="100%" alt="${esc(gridAlt)}"></p>
+${F.review.length ? `
 <details>
-<summary><img src="${LIVE}/review-head.svg" width="96%" alt="${R.reviewAlt}"></summary>
-<p align="center">
-${review.join('\n')}
-</p>
+<summary>${reviewLine}</summary>
+<br>
+<p><a href="${OPEN_SEARCH}"><img src="${LIVE}/review.svg" width="100%" alt="${esc(reviewLine)}"></a></p>
 </details>
+` : ''}
+<p><img src="${LIVE}/deck.svg" width="100%" alt="${esc(DECK_TEXT[lang].alt)}"></p>
 
-<p align="center"><img src="${A}/dividers/universe.svg" width="100%" alt=""></p>
-<p align="center">
-  <img src="${LIVE}/universe.svg" width="100%" alt="${R.universeAlt}">
-</p>
+<sub>${esc(T(AI_DISCLOSURE))}</sub>
+`,
+    heroAlt,
+    gridAlt,
+    reviewLine,
+  };
+}
 
-<p align="center"><img src="${A}/dividers/deck.svg" width="100%" alt=""></p>
-<p align="center">
-  <img src="${LIVE}/deck.svg" width="100%" alt="${R.deckAlt}">
-</p>
+// ───────────── truth guards ─────────────
 
-<p align="center">
-  <img src="${A}/footer.svg" width="100%" alt="${R.footer}">
-</p>
-
-<p align="center"><sub>✦ <b>${tr(AI_DISCLOSURE.title, lang)}</b> · ${esc(tr(AI_DISCLOSURE.body, lang))}</sub></p>
-`;
+function guard(F, pages, { assets }) {
+  const problems = [];
+  // Counts never overstate the native merged search the count links to.
+  for (const lang of LANGS) {
+    const shown = countText(F.nativeMerged, lang), n = parseInt(shown, 10);
+    if (n > F.nativeMerged || ((shown.includes('+') || shown.includes('余')) && n >= F.nativeMerged))
+      problems.push(`${lang} count "${shown}" overstates native merged ${F.nativeMerged}`);
+  }
+  // Every named organisation has merged code (synced merges only when the commit log credits them).
+  for (const b of F.brands) if (!b.repos.length) problems.push(`brand ${b.key} has no merged repository`);
+  // Banned phrases, anywhere in either README or any image text.
+  for (const [name, body] of pages) for (const phrase of BANNED) if (body.includes(phrase)) problems.push(`${name} contains "${phrase}"`);
+  // Every referenced asset exists (checked once the images are on disk).
+  if (assets) for (const [name, body] of pages.filter(([n]) => n.endsWith('.md')))
+    for (const m of body.matchAll(/(?:src|srcset)="(assets\/[^"]+)"/g))
+      if (!existsSync(join(ROOT, m[1]))) problems.push(`${name} references missing ${m[1]}`);
+  if (problems.length) throw new Error('truth guard failed:\n  ' + problems.join('\n  '));
 }
 
 // ───────────── main ─────────────
 
-const [days, data] = await Promise.all([calendar(), pullRequests()]);
-const today = new Date().toISOString().slice(0, 10);
-const upstream = data.repos.map((repo) => ({
-  repo,
-  stars: data.stars[repo] || 0,
-  prs: data.prs.filter((p) => p.repo === repo).length,
-  merged: data.merged.filter((p) => p.repo === repo).length,
-}));
+const [F, days] = await Promise.all([pullRequests().then(facts), calendar()]);
+const owners = [...new Set([...F.pillars.flatMap((p) => p.rows), ...F.review.map((l) => l.repo)].map((r) => r.split('/')[0]))];
+const logos = await avatars(owners);
 
-const avatars = await orgAvatars([...new Set(data.repos.map((r) => r.split('/')[0]))]);
-rmSync(join(ROOT, 'assets', 'live'), { recursive: true, force: true });
-mkdirSync(join(ROOT, 'assets', 'live'), { recursive: true });
-writeFileSync(STARS_CACHE, JSON.stringify(data.stars, null, 2) + '\n');
+const out = new Map(); // path -> content
 for (const lang of LANGS) {
-  const L = I18N[lang];
-  const dir = join(ROOT, 'assets', 'live', lang);
-  mkdirSync(dir, { recursive: true });
-  const put = (name, svg) => writeFileSync(join(dir, name), clean(svg));
-  put('prs-summary.svg', summarySvg(data, L, lang, avatars));
-  put('merged-head.svg', headSvg('merged', data.merged.length, L, today));
-  put('review-head.svg', headSvg('review', data.open.length, L, today));
-  const oc = ocJourney(ROOT, Math.min(MAX_MERGED, data.merged.length), { cardWidth: CARD_W, ground: GROUND, says: { hi: L.hi, bye: L.bye } });
-  data.merged.slice(0, MAX_MERGED).forEach((pr, i) => put(`merged-${i + 1}.svg`, mergedCardSvg(pr, data.stars, L, i, oc(i), avatars[pr.repo.split('/')[0]])));
-  data.open.slice(0, MAX_REVIEW).forEach((pr, i) => put(`review-${i + 1}.svg`, reviewRowSvg(pr, data.stars, L, i, avatars[pr.repo.split('/')[0]])));
-  put('universe.svg', universeSvg(lang, upstream));
-  put('deck.svg', deckSvg(days, L, today, lang));
-  writeFileSync(join(ROOT, README_TEXT[lang].file), readme(lang, data));
+  const R = readme(F, lang);
+  const dir = `assets/live/${lang}`;
+  out.set(`${dir}/hero.svg`, heroSvg(ROOT, lang, { brands: F.brands.map((b) => tr(b.hero || b, lang)), alt: R.heroAlt }));
+  out.set(`${dir}/upstream.svg`, upstreamSvg(F, lang, logos, { alt: R.gridAlt, count: countText(F.nativeMerged, 'en') }));
+  if (F.review.length) out.set(`${dir}/review.svg`, reviewSvg(F, lang, logos, R.reviewLine));
+  out.set(`${dir}/deck.svg`, deckSvg(days, DECK_TEXT[lang], lang));
+  out.set(lang === 'en' ? 'README.md' : 'README.zh-CN.md', R.text);
 }
-console.log(`PRs: ${data.prs.length} (${data.merged.length} merged) · calendar: ${days.length} days, ${days.reduce((s, d) => s + d.count, 0)} contributions`);
+
+// Content guards before anything is written; the asset check once the images are on disk; READMEs last.
+const pages = [...out].map(([p, body]) => [p, body.replace(/data:[^"]+/g, '')]);
+guard(F, pages, { assets: false });
+rmSync(join(ROOT, 'assets', 'live'), { recursive: true, force: true });
+for (const [p, body] of out) if (p.endsWith('.svg')) {
+  mkdirSync(dirname(join(ROOT, p)), { recursive: true });
+  writeFileSync(join(ROOT, p), clean(body));
+}
+guard(F, pages, { assets: true });
+for (const [p, body] of out) if (p.endsWith('.md')) writeFileSync(join(ROOT, p), body);
+console.log(`merged: ${F.nativeMerged} native in ${F.mergedRepos.size} repos · brands: ${F.brands.map((b) => b.key).join(', ')} · columns: ${F.pillars.map((p) => p.rows.length).join('/')} · review: ${F.review.map((l) => l.name).join(', ') || 'none'} · calendar: ${days.length} days`);
