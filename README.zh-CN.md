@@ -5,7 +5,7 @@
 
 **方向** · 推理服务与 KV 缓存 · 智能体运行时 · RAG 与强化学习框架<br>
 **技术栈** · Go · Python · C++ · TypeScript · Lean 4（[机器验证数学](https://github.com/LingYi-Liang/squarefree-fuglede-lean)）<br>
-**已合并进上游** · [20 余个 PR](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests)，涉及 [Google](https://github.com/google/adk-python/commits/main?author=LingYi-Liang)、[字节跳动](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3Abytedance%2Fdeer-flow&type=pullrequests)、[腾讯](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3ATencent%2FWeKnora%20repo%3ATencent-Hunyuan%2FUniRL&type=pullrequests)、[vLLM 社区（AIBrix）](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3Avllm-project%2Faibrix&type=pullrequests)等的开源项目
+**已合并进上游** · [30 个 PR](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged&type=pullrequests)，涉及 [Google](https://github.com/google/adk-python/commits/main?author=LingYi-Liang)、[字节跳动](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3Abytedance%2Fdeer-flow&type=pullrequests)、[腾讯](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3ATencent%2FWeKnora%20repo%3ATencent-Hunyuan%2FUniRL&type=pullrequests)、[vLLM 社区（AIBrix）](https://github.com/search?q=author%3ALingYi-Liang%20type%3Apr%20is%3Amerged%20repo%3Avllm-project%2Faibrix&type=pullrequests)等的开源项目
 
 <sub><b>寻求 AI 基础设施岗位机会</b> · <a href="https://lingyi-liang.github.io">lingyi-liang.github.io</a> · <a href="mailto:lingyi01525@gmail.com">lingyi01525@gmail.com</a></sub>
 
